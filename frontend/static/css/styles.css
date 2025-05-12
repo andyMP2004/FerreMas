@@ -18,7 +18,7 @@ body {
   color: white;
   height: 90vh;
   background-position: center top;
-  background-image: url('/static/assets/img/bg3.png');
+  background-image: url('/frontend/static/assets/img/fondoferre.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-attachment: fixed;
