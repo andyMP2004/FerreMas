@@ -1,69 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     {% load static %}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>BiblioWeb</title>
+    <meta name="description" content="FERREMAS - Ferretería moderna y eficiente" />
+    <meta name="author" content="FERREMAS Team" />
+    <title>FERREMAS</title>
+
     <!-- CSS -->
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">   
-    <!-- favicon -->
+
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <!-- Font Awesome (Icons) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
-<body style="background-color: black;">
-    
-    <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+<body style="background-color: #1a1a1a; font-family: 'Roboto', sans-serif;">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand fw-bold fs-3" href="{% url 'home_page' %}">FERREMAS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
                 {% if user.is_superuser %}
-                <ul style="margin-right: -250px; margin-left: 50px;" class="navbar-nav">
+                <ul class="navbar-nav ms-3">
                     <li class="nav-item">
-                        <a class="nav-link fw-bold fs-4" href="{% url 'administracion' %}">Administración</a>
+                        <a class="nav-link fw-bold" href="{% url 'administracion' %}">Panel Admin</a>
                     </li>
                 </ul>
                 {% elif user.is_authenticated %}
-                <ul style="margin-right: -250px; margin-left: 50px;" class="navbar-nav">
+                <ul class="navbar-nav ms-3">
                     <li class="nav-item">
-                        <span class="navbar-text fw-bold fs-4"><i class="fas fa-user user-icon"></i> {{ user.username }}</span>
+                        <span class="nav-link fw-bold"><i class="fas fa-user"></i> {{ user.username }}</span>
                     </li>
                 </ul>
                 {% endif %}
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link fw-bold fs-4" aria-current="page" href="{% url 'home_page' %}">Inicio</a>
+                        <a class="nav-link fw-bold" href="{% url 'home_page' %}">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-bold fs-4" href="{% url 'catalogue' %}">Catálogo</a>
+                        <a class="nav-link fw-bold" href="{% url 'catalogue' %}">Productos</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link fw-bold fs-4" href="{% url 'cart' %}"><i class="fas fa-shopping-cart cart-icon"></i> Carrito de Compra</a>
+                        <a class="nav-link fw-bold" href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i> Carrito</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-bold fs-4" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                        <a class="nav-link fw-bold" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link fw-bold fs-4" href="{% url 'contact' %}">Contacto</a>
+                        <a class="nav-link fw-bold" href="{% url 'contact' %}">Contacto</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active fw-bold fs-4" href="{% url 'signin' %}">Iniciar Sesión</a>
+                        <a class="nav-link active fw-bold" href="{% url 'signin' %}">Iniciar Sesión</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -71,50 +75,46 @@
         </div>
     </nav>
 
-    <!-- Content -->
-    <div class="container-md" id="logincontent" style="margin-top: 50px;">
-        <div class="row">
-            <div class="col" id="loginbox">
-                 <!-- Formulario de Login -->
-                 <form id="registerForm" method="POST">
+    <!-- Registro -->
+    <div class="container-md" style="margin-top: 50px;">
+        <div class="row justify-content-center">
+            <div class="col-md-6 bg-dark p-5 rounded shadow" id="loginbox">
+                <form id="registerForm" method="POST">
                     {% csrf_token %}
-                    <br>
-                    <h2 style="color: white;">Registro</h2>
+                    <h2 class="text-white mb-4">Registro en FERREMAS</h2>
                     <div class="mb-3">
-                        <label style="margin-right: 340px; color: white;" for="registerName" class="form-label">Usuario:</label>
-                        <input placeholder="Usuario" type="text" class="form-control" id="registerName" name="registerName" required>
+                        <label class="form-label text-white" for="registerName">Nombre de Usuario</label>
+                        <input type="text" class="form-control" id="registerName" name="registerName" placeholder="Ingrese su usuario" required>
                     </div>
                     <div class="mb-3">
-                        <label style="margin-right: 260px; color: white;" for="registerEmail" class="form-label">Correo Electrónico:</label>
-                        <input placeholder="Email" type="email" class="form-control" id="registerEmail" name="registerEmail" required>
+                        <label class="form-label text-white" for="registerEmail">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="registerEmail" name="registerEmail" placeholder="ejemplo@correo.com" required>
                         <div id="emailFeedback" class="invalid-feedback">Ingrese un correo electrónico válido</div>
                     </div>
                     <div class="mb-3">
-                        <label style="margin-right: 310px; color: white;" for="registerPassword" class="form-label">Contraseña:</label>
-                        <input placeholder="Contraseña" type="password" class="form-control" id="registerPassword" name="registerPassword" required>
+                        <label class="form-label text-white" for="registerPassword">Contraseña</label>
+                        <input type="password" class="form-control" id="registerPassword" name="registerPassword" placeholder="Cree una contraseña" required>
                     </div>
                     <div class="mb-3">
-                        <label style="margin-right: 230px; color: white;" for="confirmPassword" class="form-label">Confirmar Contraseña:</label>
-                        <input placeholder="Confirmar contraseña" type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                        <div id="passwordFeedback" class="invalid-feedback">La contraseña debe contener al menos una mayúscula y un número, y coincidir con la confirmación</div>
+                        <label class="form-label text-white" for="confirmPassword">Confirmar Contraseña</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Repita la contraseña" required>
+                        <div id="passwordFeedback" class="invalid-feedback">Las contraseñas deben coincidir y tener al menos una mayúscula y un número</div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Registrarse</button>
-                    <p style="margin-top: 15px;"><a href="{% url 'signin' %}" id="toggleLogin">¿Ya tienes cuenta? Inicia sesión aquí</a></p>
+                    <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                    <p class="text-white mt-3"><a href="{% url 'signin' %}" class="text-info">¿Ya tienes cuenta? Inicia sesión</a></p>
                 </form>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer>
-        <div class="text-center py-3">
-            <div>Copyright &copy; BiblioWeb 2024</div>
-        </div>
+    <footer class="bg-dark text-center text-white py-3 mt-5">
+        <div>&copy; FERREMAS 2024 - Todos los derechos reservados</div>
     </footer>
 
+    <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
-    
 </body>
 </html>

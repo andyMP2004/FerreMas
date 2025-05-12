@@ -12,17 +12,16 @@
   box-sizing: border-box;
 }
 
+
 body {
-  background-color: black;
-  font-family: "Roboto", sans-serif;
-  color: white;
-  height: 90vh;
-  background-position: center top;
-  background-image: url('/frontend/static/assets/img/fondoferre.png');
-  background-size: contain;
+  background-color: #f0f0f0;
+  background-image: url('/static/assets/img/fondoderre.png');
+  background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
   background-attachment: fixed;
 }
+
 
 
 

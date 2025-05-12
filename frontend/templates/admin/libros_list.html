@@ -69,7 +69,9 @@
             </nav>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div style="margin-top: 100px;" class="content">
-                    <h1>Lista de Libros</h1>
+                    <h1>Lista de Libros</h1><button style="margin-top: 2rem;" class="btn btn-primary">
+                        <a href="{% url 'libros_create' %}" style="color: white;">Agregar Libro</a>
+                    </button>
                     <div class="table-responsive" style="margin-top: 2rem;">
                         <table class="table table-dark table-striped table-sm">
                             <thead>
@@ -118,9 +120,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <button style="margin-top: 2rem;" class="btn btn-primary">
-                        <a href="{% url 'libros_create' %}" style="color: white;">Agregar Libro</a>
-                    </button>
+                    
                 </div>
             </main>
         </div>
