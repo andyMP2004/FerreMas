@@ -622,7 +622,7 @@ input[type="submit"]:hover {
 
 /* Estilo para el formulario de recuperación de contraseña */
 #loginbox {
-  background-color: rgb(65, 18, 18, 0.8);
+  background-color: #524e4e;
   color: black; /* Cambiar el color del texto en el formulario */
   padding: 20px; /* Agregar espaciado interno al formulario */
   border-radius: 10px; /* Agregar bordes redondeados al formulario */
