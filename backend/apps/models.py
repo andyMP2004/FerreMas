@@ -88,3 +88,31 @@ class TarjetaCompra(models.Model):
     class Meta:
         verbose_name = "tarjeta de compra"
         verbose_name_plural = "tarjetas de compra"
+
+
+
+
+class Categoria(models.Model):
+    nombre = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
+
+class Subcategoria(models.Model):
+    nombre = models.CharField(max_length=100)
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name='subcategorias')
+
+    def __str__(self):
+        return f"{self.categoria.nombre} > {self.nombre}"
+
+class Producto(models.Model):
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField(blank=True, null=True)
+    precio = models.IntegerField()
+    stock = models.IntegerField()
+    subcategoria = models.ForeignKey(Subcategoria, on_delete=models.CASCADE, related_name='productos')
+    en_promocion = models.BooleanField(default=False)
+    imagen = models.ImageField(upload_to='productos/', blank=True, null=True)
+
+    def __str__(self):
+        return self.nombre
