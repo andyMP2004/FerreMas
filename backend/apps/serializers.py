@@ -5,6 +5,8 @@ from .models import (
     Order,
     OrderItem,
     TarjetaCompra,
+    Producto,
+    Categoria,
 )
 
 
@@ -19,7 +21,17 @@ class LibroSerializer(serializers.ModelSerializer):
         model = Libro
         fields = "__all__"
 
+class CategoriaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categoria
+        fields = "__all__"
 
+
+# Serializer para productos
+class ProductoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Producto
+        fields = "__all__"
 class OrderSerializer(serializers.ModelSerializer):   
     class Meta:
         model = Order
