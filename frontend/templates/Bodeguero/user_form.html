@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>FERREMAS - Agregar Libro</title>
+    <title>FERREMAS - Agregar Usuario</title>
     <!-- CSS -->
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">   
@@ -57,30 +57,43 @@
                 </div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active sidebar-item" href="{% url 'productos_list' %}">Producto</a>
+                        <a class="nav-link sidebar-item" href="{% url 'productos_list' %}">Producto</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link sidebar-item" href="{% url 'user_list' %}">Usuarios</a>
+                        <a class="nav-link active sidebar-item" href="{% url 'user_list' %}">Usuarios</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link sidebar-item" href="{% url 'home_page' %}">Salir</a>
                     </li>
                 </ul>
             </nav>
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style>
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div style="margin-top: 100px;" class="content">
-                    <h1>Agregar Nuevo Producto</h1>
-                    <form class="form-create-libro" method="post" enctype="multipart/form-data">
-                       
-                        {{ form.as_p }}
+                    <h1>Agregar Nuevo Usuario</h1>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Nombre de usuario</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Contraseña</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm_password">Confirmar Contraseña</label>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_superuser">¿Es Administrador?</label>
+                            <input type="checkbox" id="is_superuser" name="is_superuser">
+                        </div>
                         <button type="submit" class="btn btn-primary mt-3">Guardar</button>
                     </form>
-                    <form class="form-create-producto" method="post" enctype="multipart/form-data">
-
-    {{ form_producto.as_p }}
-    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
-</form>
-
                 </div>
             </main>
         </div>

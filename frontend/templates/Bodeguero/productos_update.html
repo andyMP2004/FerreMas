@@ -69,19 +69,12 @@
             </nav>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style>
                 <div style="margin-top: 100px;" class="content">
-                    <h1>Agregar Nuevo Producto</h1>
-                    <form class="form-create-libro" method="post" enctype="multipart/form-data">
-                       
+                    <h2>Editar Libro</h2>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>
-                    <form class="form-create-producto" method="post" enctype="multipart/form-data">
-
-    {{ form_producto.as_p }}
-    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
-</form>
-
-                </div>
             </main>
         </div>
     </div>
