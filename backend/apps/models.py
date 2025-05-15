@@ -111,7 +111,7 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=200, null=True, blank=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True)
     descripcion = models.TextField(max_length=1000, null=True, blank=True)
-    precio = models.IntegerField(max_digits=10, decimal_places=2)
+    precio = models.IntegerField(null=False)
     imagen = models.ImageField(upload_to="images/", null=True, blank=True)
   
 
@@ -123,6 +123,7 @@ class Producto(models.Model):
         verbose_name_plural = "productos"
 
 
+"""
 #Este modelo muestra los pedidos del usuario
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
@@ -186,4 +187,4 @@ class TarjetaCompra(models.Model):
 
     class Meta:
         verbose_name = "tarjeta de compra"
-        verbose_name_plural = "tarjetas de compra"
+        verbose_name_plural = "tarjetas de compra" """
