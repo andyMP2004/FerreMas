@@ -20,10 +20,11 @@ class ProductoForm(forms.ModelForm):
         model = Producto
         fields = [
             "nombre",
+            "categoria",
             "descripcion",
             "precio",
-            "stock",
             "imagen",
+            
         ]
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
