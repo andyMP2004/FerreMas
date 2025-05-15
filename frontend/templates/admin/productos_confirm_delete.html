@@ -66,7 +66,7 @@
                 </div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active sidebar-item" href="{% url 'libros_list' %}">Libros</a>
+                        <a class="nav-link active sidebar-item" href="{% url 'productos_list' %}">Producto</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link sidebar-item" href="{% url 'user_list' %}">Usuarios</a>
@@ -78,11 +78,11 @@
             </nav>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div style="margin-top: 100px;" class="content">
-                    <h1>¿Estás seguro de que deseas eliminar este libro?</h1>
+                    <h1>¿Estás seguro de que deseas eliminar este producto?</h1>
                     <form style="margin-top: 25px; margin-left: 50px;" method="post">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-confirm">Confirmar</button>
-                        <a href="{% url 'libros_list' %}" class="btn btn-cancel">Cancelar</a>
+                        <a href="{% url 'productos_list' %}" class="btn btn-cancel">Cancelar</a>
                     </form>
                 </div>
             </main>
