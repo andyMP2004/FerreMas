@@ -6,6 +6,11 @@ from .views import (
     OrderItemViewSet,
     TarjetaCompraViewSet,
 )
+from .views import (
+    productoCreateView,
+    ProductoListView
+
+)   
 
 router = DefaultRouter()
 router.register(r'Libro', LibroViewSett, basename='libro')

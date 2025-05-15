@@ -23,7 +23,7 @@ from django.views.generic import (
 
 from .models import *
 from .forms import LibroForm
-
+from .forms import ProductoForm
 
 # Create your views here.
 def register(request):
@@ -90,6 +90,10 @@ class LibroListView(LoginRequiredMixin, ListView):
     model = Libro
     template_name = "admin/libros_list.html"
     context_object_name = "libros"
+class ProductoListView(LoginRequiredMixin, ListView):
+    model = Producto
+    template_name = "admin/productos_list.html"
+    context_object_name = "productos"
 
 
 class LibroCreateView(CreateView):
@@ -107,7 +111,19 @@ class LibroCreateView(CreateView):
         libro.save()
         return redirect("libros_list")
 
-
+class productoCreateView(CreateView):
+    model = Producto
+    form_class = ProductoForm
+    template_name = "admin/libros_form.html"
+    def form_valid(self, form):
+        producto = form.save(commit=False)
+        imagen_producto = self.request.FILES.get("imagenProducto")
+        if imagen_producto:
+            if imagen_producto.name and len(imagen_producto.name) > 100:
+                imagen_producto.name = imagen_producto.name[:100]
+            producto.imagenProducto = imagen_producto
+        producto.save()
+        return redirect("productos_list")
 class LibroUpdateView(LoginRequiredMixin, UpdateView):
     model = Libro
     fields = [

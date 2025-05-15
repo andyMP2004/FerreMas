@@ -71,10 +71,16 @@
                 <div style="margin-top: 100px;" class="content">
                     <h1>Agregar Nuevo Libro</h1>
                     <form class="form-create-libro" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
+                       
                         {{ form.as_p }}
                         <button type="submit" class="btn btn-primary mt-3">Guardar</button>
                     </form>
+                    <form class="form-create-producto" method="post" enctype="multipart/form-data">
+
+    {{ form_producto.as_p }}
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+</form>
+
                 </div>
             </main>
         </div>

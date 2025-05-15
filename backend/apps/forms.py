@@ -1,6 +1,6 @@
 from django import forms
 from .models import Libro
-
+from .models import Producto
 
 class LibroForm(forms.ModelForm):
     class Meta:
@@ -15,9 +15,16 @@ class LibroForm(forms.ModelForm):
             "portadaLibro",
             "archivoLibro",
         ]
-
+class ProductoForm(forms.ModelForm):
+    class Meta:
+        model = Producto
+        fields = [
+            "nombre",
+            "descripcion",
+            "precio",
+            "stock",
+            "imagen",
+        ]
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["archivoLibro"].widget.attrs.update(
-            {"accept": ".pdf, .doc, .docx, .txt"}
-        )
+       
