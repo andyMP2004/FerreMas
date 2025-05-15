@@ -88,7 +88,7 @@ def administracion(request):
 
 class LibroListView(LoginRequiredMixin, ListView):
     model = Libro
-    template_name = "admin/libros_list.html"
+    template_name = "admin/productos_list.html"
     context_object_name = "libros"
 class ProductoListView(LoginRequiredMixin, ListView):
     model = Producto
@@ -99,7 +99,7 @@ class ProductoListView(LoginRequiredMixin, ListView):
 class LibroCreateView(CreateView):
     model = Libro
     form_class = LibroForm
-    template_name = "admin/libros_form.html"
+    template_name = "admin/productos_form.html"
 
     def form_valid(self, form):
         libro = form.save(commit=False)
@@ -109,12 +109,12 @@ class LibroCreateView(CreateView):
                 archivo_libro.name = archivo_libro.name[:100]
             libro.archivoLibro = archivo_libro
         libro.save()
-        return redirect("libros_list")
+        return redirect("productos_list")
 
 class productoCreateView(CreateView):
     model = Producto
     form_class = ProductoForm
-    template_name = "admin/libros_form.html"
+    template_name = "admin/productos_form.html"
     def form_valid(self, form):
         producto = form.save(commit=False)
         imagen_producto = self.request.FILES.get("imagenProducto")
@@ -136,14 +136,14 @@ class LibroUpdateView(LoginRequiredMixin, UpdateView):
         "portadaLibro",
         "archivoLibro",
     ]
-    template_name = "admin/libros_update.html"
-    success_url = reverse_lazy("libros_list")
+    template_name = "admin/productos_update.html"
+    success_url = reverse_lazy("productos_list")
 
 
 class LibroDeleteView(LoginRequiredMixin, DeleteView):
     model = Libro
-    template_name = "admin/libros_confirm_delete.html"
-    success_url = reverse_lazy("libros_list")
+    template_name = "admin/productos_confirm_delete.html"
+    success_url = reverse_lazy("productos_list")
 
 
 class UserListView(LoginRequiredMixin, ListView):
