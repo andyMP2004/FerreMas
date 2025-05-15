@@ -13,7 +13,7 @@ from .views import (
 )   
 
 router = DefaultRouter()
-router.register(r'Libro', LibroViewSett, basename='libro')
+#router.register(r'Libro', LibroViewSett, basename='libro')
 router.register(r'Order', OrderViewSet, basename='order')
 router.register(r'OrdeItem', OrderItemViewSet, basename='orderitem')
 router.register(r'TarjetaCompra', TarjetaCompraViewSet, basename='tarjetacompra')

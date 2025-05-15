@@ -86,16 +86,31 @@ def administracion(request):
     return render(request, "admin/adminhome.html")
 
 
-class LibroListView(LoginRequiredMixin, ListView):
-    model = Libro
-    template_name = "admin/productos_list.html"
-    context_object_name = "libros"
+
 class ProductoListView(LoginRequiredMixin, ListView):
     model = Producto
     template_name = "admin/productos_list.html"
     context_object_name = "productos"
+class productoCreateView(CreateView):
+    model = Producto
+    form_class = ProductoForm
+    template_name = "admin/productos_form.html"
+    def form_valid(self, form):
+        producto = form.save(commit=False)
+        imagen_producto = self.request.FILES.get("imagenProducto")
+        if imagen_producto:
+            if imagen_producto.name and len(imagen_producto.name) > 100:
+                imagen_producto.name = imagen_producto.name[:100]
+            producto.imagenProducto = imagen_producto
+        producto.save()
+        return redirect("productos_list")
+    
 
-
+"""  
+class LibroListView(LoginRequiredMixin, ListView):
+    model = Libro
+    template_name = "admin/productos_list.html"
+    context_object_name = "libros"
 class LibroCreateView(CreateView):
     model = Libro
     form_class = LibroForm
@@ -111,19 +126,7 @@ class LibroCreateView(CreateView):
         libro.save()
         return redirect("productos_list")
 
-class productoCreateView(CreateView):
-    model = Producto
-    form_class = ProductoForm
-    template_name = "admin/productos_form.html"
-    def form_valid(self, form):
-        producto = form.save(commit=False)
-        imagen_producto = self.request.FILES.get("imagenProducto")
-        if imagen_producto:
-            if imagen_producto.name and len(imagen_producto.name) > 100:
-                imagen_producto.name = imagen_producto.name[:100]
-            producto.imagenProducto = imagen_producto
-        producto.save()
-        return redirect("productos_list")
+
 class LibroUpdateView(LoginRequiredMixin, UpdateView):
     model = Libro
     fields = [
@@ -144,7 +147,7 @@ class LibroDeleteView(LoginRequiredMixin, DeleteView):
     model = Libro
     template_name = "admin/productos_confirm_delete.html"
     success_url = reverse_lazy("productos_list")
-
+"""
 
 class UserListView(LoginRequiredMixin, ListView):
     model = User
