@@ -70,17 +70,17 @@
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style>
                 <div style="margin-top: 100px;" class="content">
                     <h1>Agregar Nuevo Producto</h1>
-                    <form class="" id="ProductoForm" method="post" enctype="multipart/form-data">
+                    <form class="form-create-producto" id="ProductoForm" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <br>
                     
                     <div class="mb-3">
                         <label style="margin-right: 340px; color: rgb(7, 7, 7);" for="productoName" class="form-label">Nombre Producto:</label>
-                        <input placeholder="Ingrese producto" type="text" class="form-control" id="productoName"  required>
+                        <input placeholder="Ingrese producto" type="text" class="form-control" id="nombre" name="nombre" required>
                     </div>
                     <div class="mb-3">
                         <label style="margin-right: 310px; color: rgb(2, 2, 2);" for="categoria" class="form-label">categoria:</label>
-                        <select placeholder="ingrese su categoria" class="form-control" id="categoria" value="1"  required >
+                        <select placeholder="ingrese su categoria" class="form-control" id="categoria" value="1" name="categoria" required >
                             <option value="1">Herramientas</option>
                             <option value="2">Materiales</option>
                             <option value="3">Seguridad</option>
@@ -90,22 +90,22 @@
                     
                      <div class="">
                         <label style="margin-right: 640px; color: rgb(8, 8, 8);" for="descripcion" class="form-label">Descripcion producto:</label>
-                        <input placeholder="Ingrese Descripcion del producto" type="text" class="form-control" id="descripcion"  required>
+                        <input placeholder="Ingrese Descripcion del producto" type="text" class="form-control" id="descripcion" name="descripcion" required>
                     </div>
                     <div class="">
                         <label style="margin-right: 640px; color: rgb(8, 8, 8);" for="precio" class="form-label">Precio Del Producto:</label>
-                        <input placeholder="Ingrese Precio del Producto" type="text" class="form-control" id="precio"  required>
+                        <input placeholder="Ingrese Precio del Producto" type="text" class="form-control" id="precio" name="precio" required>
                     </div>
                      
-                    <input type="file" id="imagen" name="archivo" />
+                    <input type="file" id="imagen" name="imagen" />
                     
                      <button type="submit" class="btn btn-primary mt-3">Guardar</button>   
                     </form>
-                    <form class="form-create-producto" method="post" enctype="multipart/form-data">
+                    
 
     
     
-</form>
+
 
                 </div>
             </main>
@@ -117,5 +117,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- JavaScript -->
     <script src=""></script>
+    <script src="{% static 'javascript/producto.js' %}"></script>
+
 </body>
 </html>

@@ -96,13 +96,7 @@ class productoCreateView(CreateView):
     form_class = ProductoForm
     template_name = "admin/productos_form.html"
     def form_valid(self, form):
-        producto = form.save(commit=False)
-        imagen_producto = self.request.FILES.get("imagenProducto")
-        if imagen_producto:
-            if imagen_producto.name and len(imagen_producto.name) > 100:
-                imagen_producto.name = imagen_producto.name[:100]
-            producto.imagenProducto = imagen_producto
-        producto.save()
+        form.save()
         return redirect("productos_list")
     
 
