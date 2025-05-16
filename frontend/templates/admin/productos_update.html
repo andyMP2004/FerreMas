@@ -72,7 +72,39 @@
                     <h2>Editar Producto</h2>
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{ form.as_p }}
+                        <form class="form-create-producto" id="ProductoForm" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <br>
+                    
+                    <div class="mb-3">
+                        <label style="margin-right: 340px; color: rgb(7, 7, 7);" for="productoName" class="form-label">Nombre Producto:</label>
+                        <input placeholder="Ingrese producto" value="{{producto.nombre}}" type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label style="margin-right: 310px; color: rgb(2, 2, 2);" for="categoria" class="form-label">categoria:</label>
+                        <select placeholder="ingrese su categoria" class="form-control" value="{{producto.categoria}} id="categoria" value="1" name="categoria" required >
+                            <option value="1">Herramientas</option>
+                            <option value="2">Materiales</option>
+                            <option value="3">Seguridad</option>
+                            <option value="4">otros</option>  
+                            </select>     
+                    </div>
+                    
+                     <div class="">
+                        <label style="margin-right: 640px; color: rgb(8, 8, 8);" for="descripcion" class="form-label">Descripcion producto:</label>
+                        <input placeholder="Ingrese Descripcion del producto" value="{{producto.descripcion}}" type="text" class="form-control" id="descripcion" name="descripcion" required>
+                    </div>
+                    <div class="">
+                        <label style="margin-right: 640px; color: rgb(8, 8, 8);" for="precio" class="form-label">Precio Del Producto:</label>
+                        <input placeholder="Ingrese Precio del Producto" type="text" value="{{producto.precio}}" class="form-control" id="precio" name="precio" required>
+                    </div>
+                     
+                    {% if form.instance.imagen %}
+                                <small class="d-block mt-2">imagen actual: 
+                                    <a href="{{ form.instance.imagen.url }}" target="_blank">{{ form.instance.imagen.name }}</a>
+                                </small>
+                            {% endif %}
+                     <input type="file" name="imagen" id="id_imagen" class="form-control" accept="image/*">
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>
             </main>
