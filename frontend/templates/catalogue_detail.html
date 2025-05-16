@@ -78,28 +78,24 @@
     <div class="container-md" id="infobook">
         <div class="row" style="padding-top: 4rem">
             <div class="col-lg-4" style="display: flex; align-items: center; margin-top: 100px;">
-                {% if libro.portadaLibro %}
-                    <img src="{{ libro.portadaLibro.url }}" alt="{{ libro.tituloLibro }}" class="img-fluid">
+                {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-fluid">
                 {% else %}
                     N/A
                 {% endif %}
                 <div class="col-lg-7" id="infotxt" style="margin-left: 100px; width: 800px; text-align: left; background-color: rgb(65, 18, 18, 0.8);">
-                    <h1 class="tittlebk">{{ libro.tituloLibro }}</h1>
-                    <h4 class="autorbk">{{ libro.autorLibro }} <br> {{ libro.anioLibro }}</h4>
-                    <p class="reviewbk">{{ libro.descripcionLibro }}</p>
-                    <h4 class="tittlebk" style="color: rgb(255, 255, 255);">${{ libro.precioLibro }}  
-                    {% if libro.digital %}
-                        | Disponible en Tienda: No
-                    {% else %}
-                        | Disponible en Tienda: Si
-                    {% endif %} </h4>
+                    <h1 class="tittlebk">{{ producto.nombre }}</h1>
+                    <h4 class="autorbk">{{ producto.descripcion }} </h4>
+                    <p class="reviewbk">{{ producto.categoria }}</p>
+                    <h4 class="tittlebk" style="color: rgb(255, 255, 255);">${{ producto.precio }}  
+                
                 </div>
             </div>
         </div>
         <div class="row" id="downloadbtn" style="margin-top: 15px">
             <div class="col"></div>
             <div class="col" style="display: flex; justify-content: center; align-items: center">
-                    <button data-libro={{libro.id}} data-action="add" class="btn btn-success add-btn update-cart"> Añadir al carrito</button>
+                    <button data-libro={{producto.id}} data-action="add" class="btn btn-success add-btn update-cart"> Añadir al carrito</button>
             </div>
             <div class="col"></div>
         </div>

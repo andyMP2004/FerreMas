@@ -78,7 +78,7 @@
     <div class="container my-5 text-center">
         <img src="{% static 'assets/img/logo-ferremas.png' %}" alt="FERREMAS Logo" style="max-width: 300px;">
         <form id="search-form" class="mt-4">
-            <input type="text" name="barra-busqueda" id="barra-busqueda" class="form-control" placeholder="Buscar productos, herramientas o marcas">
+            <input type="text" name="barra-busqueda" id="barra-busqueda" class="producto_list" placeholder="Buscar productos, herramientas o marcas">
             <button type="submit" class="btn btn-primary mt-2">Buscar</button>
         </form>
     </div>
@@ -88,7 +88,7 @@
         <div class="row justify-content-center">
             {% for producto in productos %}
                 <div class="col-md-3 col-sm-6 mb-4 text-center">
-                    <a href="{% url 'producto_detail' producto.id %}">
+                    <a href="{% url 'catalogue_detail' producto.id %}">
                         {% if producto.imagen %}
                             <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-fluid" style="max-height: 250px;">
                         {% else %}
