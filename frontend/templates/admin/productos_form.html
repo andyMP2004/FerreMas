@@ -70,17 +70,17 @@
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style>
                 <div style="margin-top: 100px;" class="content">
                     <h1>Agregar Nuevo Producto</h1>
-                    <form class="" method="post" enctype="multipart/form-data">
+                    <form class="" id="ProductoForm" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <br>
-                    <h2 style="color: white;" >Iniciar Sesión</h2>
+                    
                     <div class="mb-3">
-                        <label style="margin-right: 340px; color: rgb(7, 7, 7);" for="nombreP" class="form-label">Nombre Producto:</label>
-                        <input placeholder="Ingrese producto" type="text" class="form-control" id="nombreP"  required>
+                        <label style="margin-right: 340px; color: rgb(7, 7, 7);" for="productoName" class="form-label">Nombre Producto:</label>
+                        <input placeholder="Ingrese producto" type="text" class="form-control" id="productoName"  required>
                     </div>
                     <div class="mb-3">
-                        <label style="margin-right: 310px; color: rgb(2, 2, 2);" for="loginPassword" class="form-label">categoria:</label>
-                        <select placeholder="ingrese su categoria" class="form-control" id="op1" value="1"  required >
+                        <label style="margin-right: 310px; color: rgb(2, 2, 2);" for="categoria" class="form-label">categoria:</label>
+                        <select placeholder="ingrese su categoria" class="form-control" id="categoria" value="1"  required >
                             <option value="1">Herramientas</option>
                             <option value="2">Materiales</option>
                             <option value="3">Seguridad</option>
@@ -89,15 +89,15 @@
                     </div>
                     
                      <div class="">
-                        <label style="margin-right: 640px; color: rgb(8, 8, 8);" for="descripcionP" class="form-label">Descripcion producto:</label>
-                        <input placeholder="Ingrese Descripcion del producto" type="text" class="form-control" id="descripcionP"  required>
+                        <label style="margin-right: 640px; color: rgb(8, 8, 8);" for="descripcion" class="form-label">Descripcion producto:</label>
+                        <input placeholder="Ingrese Descripcion del producto" type="text" class="form-control" id="descripcion"  required>
                     </div>
                     <div class="">
-                        <label style="margin-right: 640px; color: rgb(8, 8, 8);" for="precioP" class="form-label">Precio Del Producto:</label>
-                        <input placeholder="Ingrese Precio del Producto" type="text" class="form-control" id="precioP"  required>
+                        <label style="margin-right: 640px; color: rgb(8, 8, 8);" for="precio" class="form-label">Precio Del Producto:</label>
+                        <input placeholder="Ingrese Precio del Producto" type="text" class="form-control" id="precio"  required>
                     </div>
                      
-                    <input type="file" id="archivo" name="archivo" />
+                    <input type="file" id="imagen" name="archivo" />
                     
                      <button type="submit" class="btn btn-primary mt-3">Guardar</button>   
                     </form>
