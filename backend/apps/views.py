@@ -119,29 +119,27 @@ class LibroCreateView(CreateView):
             libro.archivoLibro = archivo_libro
         libro.save()
         return redirect("productos_list")
+"""
 
-
-class LibroUpdateView(LoginRequiredMixin, UpdateView):
-    model = Libro
+class ProductoUpdateView(LoginRequiredMixin, UpdateView):
+    model = Producto
     fields = [
-        "tituloLibro",
-        "autorLibro",
-        "anioLibro",
-        "descripcionLibro",
-        "precioLibro",
-        "digital",
-        "portadaLibro",
-        "archivoLibro",
+        "nombre",
+        "categoria",
+        "descripcion",
+        "precio",
+        "imagen",
+
     ]
     template_name = "admin/productos_update.html"
     success_url = reverse_lazy("productos_list")
 
 
-class LibroDeleteView(LoginRequiredMixin, DeleteView):
-    model = Libro
+class ProductoDeleteView(LoginRequiredMixin, DeleteView):
+    model = Producto
     template_name = "admin/productos_confirm_delete.html"
     success_url = reverse_lazy("productos_list")
-"""
+
 
 class UserListView(LoginRequiredMixin, ListView):
     model = User

@@ -43,7 +43,7 @@ urlpatterns = [
     #path('administracion/libros/create/', views.LibroCreateView.as_view(), name='libros_create'),
     path('administracion/producutos/create/', views.productoCreateView.as_view(), name='productos_create'),
     path('administracion/producutos/', views.ProductoListView.as_view(), name='productos_list'),    
-    #path('administracion/libros/update/<int:pk>/', views.LibroUpdateView.as_view(), name='libros_update'),
+    path('administracion/producutos/update/<int:pk>/', views.ProductoUpdateView.as_view(), name='productos_update'),
     #path('administracion/libros/delete/<int:pk>/', views.LibroDeleteView.as_view(), name='libros_delete'),
     # -------------------------------------------------------------------------
     path('administracion/users/', views.UserListView.as_view(), name='user_list'),
