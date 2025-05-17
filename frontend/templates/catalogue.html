@@ -108,32 +108,22 @@
                                         <th style="border: 1px solid black;" >Descripción</th>
                                         <th style="border: 1px solid black;" >Precio</th>
                                         <th style="border: 1px solid black;" >Imagen</th>
-                                        <th style="border: 1px solid black;" >Editar</th>
-                                        <th style="border: 1px solid black;" >Eliminar</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for producto in productos %}
+                                    {% for productos in object_list %}
                                     <tr style="border: 1px solid black;">
-                                        <td style="border: 1px solid black;">{{ producto.nombre }}</td>
-                                        <td style="border: 1px solid black;">{{ producto.categoria }}</td>
-                                        <td style="border: 1px solid black;">{{ producto.descripcion }}</td>
-                                        <td style="border: 1px solid black;">{{ producto.precio }}</td>
+                                        <td style="border: 1px solid black;">{{ productos.nombre }}</td>
+                                        <td style="border: 1px solid black;">{{ productos.categoria }}</td>
+                                        <td style="border: 1px solid black;">{{ productos.descripcion }}</td>
+                                        <td style="border: 1px solid black;">{{ productos.precio }}</td>
                                         <td style="border: 1px solid black;">
-                                            {% if producto.imagen %}
-                                                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" width="50">
+                                            {% if productos.imagen %}
+                                                <img src="{{ productos.imagen.url }}" alt="{{ productos.nombre }}" width="50">
                                             {% else %}
                                                 N/A
                                             {% endif %}
-                                        </td>
-                                        <td style="border: 1px solid black;">
-                                            <a href="{% url 'productos_update' producto.id %}" class="btn btn-warning me-2">Editar</a>
-                                        </td>
-                                        <td style="border: 1px solid black;">
-                                            <form method="post" action="{% url 'productos_delete' producto.id %}" style="display:inline;">
-                                                {% csrf_token %}
-                                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                                            </form>
                                         </td>
                                     </tr>
                                     {% endfor %}
