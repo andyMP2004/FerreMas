@@ -190,7 +190,9 @@ def home_page(request):
 def catalogue_detail(request, id):
     producto = get_object_or_404(Producto, id=id)
     return render(request, 'catalogue_detail.html', {'producto': producto})
-
+def cart(request, id):
+    producto = get_object_or_404(Producto, id=id)
+    return render(request, 'cart.html', {'producto': producto})
 class catalogueListView(ListView):
     model = Libro
     template_name = "catalogue.html"
@@ -234,19 +236,6 @@ def libro_detail(request, libro_id):
     return render(request, "catalogue_detail.html", context)
 
 
-def cart(request):
-    if request.user.is_authenticated:
-        user = request.user
-        order, created = Order.objects.get_or_create(user=user, complete=False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_cart_items
-    else:
-        items = []
-        order = {"get_cart_total": 0, "get_cart_items": 0, "shipping": False}
-        cartItems = order["get_cart_items"]
-
-    context = {"items": items, "order": order, "cartItems": cartItems}
-    return render(request, "cart.html", context)
 
 
 def checkout(request):
