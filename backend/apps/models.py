@@ -105,7 +105,8 @@ class Producto(models.Model):
     descripcion = models.TextField(max_length=1000, null=True, blank=True)
     precio = models.IntegerField(null=False)
     imagen = models.ImageField(upload_to="images/", null=True, blank=True)
-  
+    stock = models.IntegerField(null=False, default=0)
+    estado = models.IntegerField(null=False, default=0)
 
     def __str__(self):
         return self.nombre

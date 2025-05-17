@@ -91,6 +91,11 @@ class ProductoListView(LoginRequiredMixin, ListView):
     template_name = "admin/productos_list.html"
     context_object_name = "productos"
 
+class ProductoDetailView(LoginRequiredMixin, DetailView):
+    model = Producto
+    template_name = "admin/productos_detail.html"
+    context_object_name = "producto"
+
 
 class ProductosListView(ListView):
     model = Producto
