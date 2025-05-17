@@ -42,11 +42,10 @@ urlpatterns = [
     #path('administracion/libros/create/', views.LibroCreateView.as_view(), name='libros_create'),
     path('administracion/producutos/create/', views.productoCreateView.as_view(), name='productos_create'),
     path('administracion/producutos/', views.ProductoListView.as_view(), name='productos_list'),
-<<<<<<< HEAD
+
     path('catalogue/', views.ProductosListView.as_view(), name='catalogue'),   
-=======
+
       
->>>>>>> f1d2170a7aaff0f13d57ff1128540658d6589eb5
     path('administracion/producutos/update/<int:pk>/', views.ProductoUpdateView.as_view(), name='productos_update'),
     path('administracion/producutos/delete/<int:pk>/', views.ProductoDeleteView.as_view(), name='productos_confirm_delete'),
     # -------------------------------------------------------------------------
