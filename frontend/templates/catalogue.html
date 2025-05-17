@@ -112,15 +112,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for productos in object_list %}
+                                    {% for producto in productos %}
                                     <tr style="border: 1px solid black;">
-                                        <td style="border: 1px solid black;">{{ productos.nombre }}</td>
-                                        <td style="border: 1px solid black;">{{ productos.categoria }}</td>
-                                        <td style="border: 1px solid black;">{{ productos.descripcion }}</td>
-                                        <td style="border: 1px solid black;">{{ productos.precio }}</td>
+                                        <td style="border: 1px solid black;">{{ producto.nombre }}</td>
+                                        <td style="border: 1px solid black;">{{ producto.categoria }}</td>
+                                        <td style="border: 1px solid black;">{{ producto.descripcion }}</td>
+                                        <td style="border: 1px solid black;">{{ producto.precio }}</td>
                                         <td style="border: 1px solid black;">
-                                            {% if productos.imagen %}
-                                                <img src="{{ productos.imagen.url }}" alt="{{ productos.nombre }}" width="50">
+                                            {% if producto.imagen %}
+                                                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" width="50">
                                             {% else %}
                                                 N/A
                                             {% endif %}
@@ -182,23 +182,7 @@
 </div>
 
 
-    <!-- Productos -->
-    <div class="container">
-        <div class="row justify-content-center">
-            {% for producto in productos %}
-                <div class="col-md-3 col-sm-6 mb-4 text-center">
-                    <a href="{% url 'catalogue_detail' producto.id %}">
-                        {% if producto.imagen %}
-                            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="img-fluid" style="max-height: 250px;">
-                        {% else %}
-                            <div class="bg-secondary text-white p-5">Sin imagen</div>
-                        {% endif %}
-                        <h5 class="mt-2">{{ producto.nombre }}</h5>
-                    </a>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+   
     
 
     <!-- Footer -->

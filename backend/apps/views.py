@@ -93,7 +93,8 @@ class ProductoListView(LoginRequiredMixin, ListView):
 
 class ProductosListView(ListView):
     model = Producto
-    template_name = "templates/catalogue.html"
+    template_name = "catalogue.html"
+    context_object_name = "productos"
 
 class productoCreateView(CreateView):
     model = Producto

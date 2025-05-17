@@ -26,7 +26,6 @@ urlpatterns = [
     path("api/", include("apps.urls")),
     # -------------------------------------------------------------------------
     path("", views.home_page, name="home_page"),
-    path("catalogue/", views.catalogueListView.as_view(), name="catalogue"),
     path('libro/<int:libro_id>/', views.libro_detail, name='libro_detail'),
     path('cart/', views.cart, name="cart"),
     path('checkout/', views.checkout, name="checkout"),
@@ -43,7 +42,7 @@ urlpatterns = [
     #path('administracion/libros/create/', views.LibroCreateView.as_view(), name='libros_create'),
     path('administracion/producutos/create/', views.productoCreateView.as_view(), name='productos_create'),
     path('administracion/producutos/', views.ProductoListView.as_view(), name='productos_list'),
-    path('templates/catalogue/', views.ProductosListView.as_view(), name='catalogue'),   
+    path('catalogue/', views.ProductosListView.as_view(), name='catalogue'),   
     path('administracion/producutos/update/<int:pk>/', views.ProductoUpdateView.as_view(), name='productos_update'),
     path('administracion/producutos/delete/<int:pk>/', views.ProductoDeleteView.as_view(), name='productos_confirm_delete'),
     # -------------------------------------------------------------------------
