@@ -86,10 +86,14 @@ def administracion(request):
     return render(request, "admin/adminhome.html")
 
 
-
 class ProductoListView(LoginRequiredMixin, ListView):
     model = Producto
     template_name = "admin/productos_list.html"
+    context_object_name = "productos"
+
+class ProductosListView(LoginRequiredMixin, ListView):
+    model = Producto
+    template_name = "catalogue.html"
     context_object_name = "productos"
 class productoCreateView(CreateView):
     model = Producto
@@ -100,26 +104,7 @@ class productoCreateView(CreateView):
         return redirect("productos_list")
     
 
-"""  
-class LibroListView(LoginRequiredMixin, ListView):
-    model = Libro
-    template_name = "admin/productos_list.html"
-    context_object_name = "libros"
-class LibroCreateView(CreateView):
-    model = Libro
-    form_class = LibroForm
-    template_name = "admin/productos_form.html"
 
-    def form_valid(self, form):
-        libro = form.save(commit=False)
-        archivo_libro = self.request.FILES.get("archivoLibro")
-        if archivo_libro:
-            if archivo_libro.name and len(archivo_libro.name) > 100:
-                archivo_libro.name = archivo_libro.name[:100]
-            libro.archivoLibro = archivo_libro
-        libro.save()
-        return redirect("productos_list")
-"""
 
 class ProductoUpdateView(LoginRequiredMixin, UpdateView):
     model = Producto
@@ -359,3 +344,23 @@ class TarjetaCompraViewSet(viewsets.ModelViewSet):
     queryset = TarjetaCompra.objects.all()
     serializer_class = TarjetaCompraSerializer
 
+"""  
+class LibroListView(LoginRequiredMixin, ListView):
+    model = Libro
+    template_name = "admin/productos_list.html"
+    context_object_name = "libros"
+class LibroCreateView(CreateView):
+    model = Libro
+    form_class = LibroForm
+    template_name = "admin/productos_form.html"
+
+    def form_valid(self, form):
+        libro = form.save(commit=False)
+        archivo_libro = self.request.FILES.get("archivoLibro")
+        if archivo_libro:
+            if archivo_libro.name and len(archivo_libro.name) > 100:
+                archivo_libro.name = archivo_libro.name[:100]
+            libro.archivoLibro = archivo_libro
+        libro.save()
+        return redirect("productos_list")
+"""
