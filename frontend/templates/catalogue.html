@@ -169,9 +169,14 @@
                   <td>
                     {% if producto.imagen %}
                     <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" width="50">
-                    <form action="{% url 'catalogue_detail' producto.id %}">
-                        <button type="submit">Ir al detalle</button>
-                    </form>
+                   <a href="{% url 'catalogue_detail' producto.id %}"
+                      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
+                      Ver Detalle
+                    </a>
+
+                    <a href="{% url 'cart' producto.id %}"
+                      class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
+                      Añadir al Carrito
                     
                     {% else %}
                     <p> N/A</p>
@@ -219,9 +224,14 @@
                   <td>
                     {% if producto.imagen %}
                     <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" width="50">
-                    <form action="{% url 'catalogue_detail' producto.id %}">
-                        <button type="submit">Ir al detalle</button>
-                    </form>
+                    <a href="{% url 'catalogue_detail' producto.id %}"
+                      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
+                      Ver Detalle
+                    </a>
+
+                    <a href="{% url 'cart' producto.id %}"
+                      class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
+                      Añadir al Carrito
                     {% else %}
                     N/A
                     {% endif %}
@@ -266,9 +276,14 @@
                   <td>
                     {% if producto.imagen %}
                     <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" width="50">
-                    <form action="{% url 'catalogue_detail' producto.id %}">
-                        <button type="submit">Ir al detalle</button>
-                    </form>
+                    <a href="{% url 'catalogue_detail' producto.id %}"
+                      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
+                      Ver Detalle
+                    </a>
+
+                    <a href="{% url 'cart' producto.id %}"
+                      class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
+                      Añadir al Carrito
                     {% else %}
                     N/A
                     {% endif %}
