@@ -83,39 +83,13 @@
     </nav>
 
     <!-- Content -->
-  <div class="table-responsive" style="margin-top: 2rem;">
-            <table class="table table-dark table-striped table-sm">
-              <thead>
-                <tr style="border: 1px solid black; background-color: #15725b;">
-                  <th style="border: 1px solid black;">Nombre</th>
-                  <th style="border: 1px solid black;">Precio</th>
-                  <th style="border: 1px solid black;">Imagen</th>
-
-                </tr>
-              </thead>
-              <tbody>
-                {% for producto in productos %}
-                {% if producto.categoria.nombre == "Herramientas" %}
-                <tr>
-                  <td>{{ producto.nombre }}</td>
-                  <td>{{ producto.precio }}</td>
-                  <td>
-                    {% if producto.imagen %}
-                    <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" width="50">
-                    <form action="{% url 'catalogue_detail' producto.id %}">
-                        <button type="submit">Ir al detalle</button>
-                    </form>
-
-                    {% else %}
-                    N/A
-                    {% endif %}
-                  </td>
-                </tr>
-                {% endif %}
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+    <!-- catalogue_detail.html -->
+    <div class="card header w-50 justify-content-center align-items-center text-center mt-5">
+        <h1>{{ producto.nombre }}</h1>
+        <p>Precio: {{ producto.precio }}</p>
+        <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" width="200">
+        <p>Categoría: {{ producto.categoria.nombre }}</p>
+    </div>  
     <!-- Footer -->
     <footer class="text-center mt-5 text-light">
         <div class="py-4">

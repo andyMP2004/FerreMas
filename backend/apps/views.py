@@ -91,10 +91,10 @@ class ProductoListView(LoginRequiredMixin, ListView):
     template_name = "admin/productos_list.html"
     context_object_name = "productos"
 
-class ProductoDetailView( DetailView):
+class HerramientaDetailView( DetailView):
     model = Producto
     template_name = "catalogue_detail.html"
-    context_object_name = "productosD"
+    context_object_name = "Lista"
 
 
 class ProductosListView(ListView):
@@ -187,6 +187,9 @@ def home_page(request):
     context = {"items": items, "order": order, "cartItems": cartItems}
     return render(request, "home-page.html", context)
 
+def catalogue_detail(request, id):
+    producto = get_object_or_404(Producto, id=id)
+    return render(request, 'catalogue_detail.html', {'producto': producto})
 
 class catalogueListView(ListView):
     model = Libro

@@ -40,9 +40,8 @@ urlpatterns = [
     path('administracion/producutos/create/', views.productoCreateView.as_view(), name='productos_create'),
     path('administracion/producutos/', views.ProductoListView.as_view(), name='productos_list'),
 
-    path('catalogue/', views.ProductosListView.as_view(), name='catalogue'),   
-    path('catalogue/<int:pk>/', views.ProductoDetailView.as_view(), name='catalogue_detail'),
-      
+    path('catalogue/', views.ProductosListView.as_view(), name='catalogue'),
+    path('catalogue/<int:id>/', views.catalogue_detail, name='catalogue_detail'),   
     path('administracion/producutos/update/<int:pk>/', views.ProductoUpdateView.as_view(), name='productos_update'),
     path('administracion/producutos/delete/<int:pk>/', views.ProductoDeleteView.as_view(), name='productos_confirm_delete'),
     # -------------------------------------------------------------------------
