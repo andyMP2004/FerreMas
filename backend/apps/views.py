@@ -190,9 +190,26 @@ def home_page(request):
 def catalogue_detail(request, id):
     producto = get_object_or_404(Producto, id=id)
     return render(request, 'catalogue_detail.html', {'producto': producto})
-def cart(request, id):
+def cart(request):
+    cart = request.session.get('cart', [])
+    productos = Producto.objects.filter(id__in=cart)
+    total = sum(producto.precio for producto in productos)
+
+    return render(request, 'cart.html', {
+        'productos': productos,
+        'total': total,
+        'items': len(productos),
+    })
+def add_to_cart(request, id):
     producto = get_object_or_404(Producto, id=id)
-    return render(request, 'cart.html', {'producto': producto})
+    cart = request.session.get('cart', [])
+
+    if id not in cart:
+        cart.append(id)
+        request.session['cart'] = cart
+
+    return redirect('cart')  # redirige al carrito o a donde tú quieras
+
 class catalogueListView(ListView):
     model = Libro
     template_name = "catalogue.html"
