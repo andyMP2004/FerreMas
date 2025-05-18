@@ -98,8 +98,7 @@
                             <p class="h4 text-success">Precio: ${{ producto.precio }}</p>
                             <p class="text-light mb-1">Categoría: <strong>{{ producto.categoria.nombre }}</strong></p>
                             <p class="text-light"><strong>Descripción:</strong> {{ producto.descripcion }}</p>
-                            <a href="{% url 'add_to_cart' producto.id %}" class="btn btn-outline-light mt-3">Agregar al
-                                Carrito</a>
+                            <button data-producto="{{ producto.id }}" data-action="add" class="btn btn-sm btn-success update-cart w-100">Añadir</button>
                         </div>
                     </div>
                 </div>
