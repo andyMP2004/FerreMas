@@ -190,6 +190,7 @@ def home_page(request):
 def catalogue_detail(request, id):
     producto = get_object_or_404(Producto, id=id)
     return render(request, 'catalogue_detail.html', {'producto': producto})
+@login_required
 def cart(request):
     cart = request.session.get('cart', [])
     productos = Producto.objects.filter(id__in=cart)
@@ -200,6 +201,7 @@ def cart(request):
         'total': total,
         'items': len(productos),
     })
+@login_required
 def add_to_cart(request, id):
     producto = get_object_or_404(Producto, id=id)
     cart = request.session.get('cart', [])
