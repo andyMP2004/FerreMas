@@ -82,7 +82,7 @@
 
 
   </div>
-  
+
   <!-- Acordeón personalizado con tema oscuro -->
   <div class="accordion custom-dark-accordion" id="accordionExample">
     <div class="accordion-item">
@@ -169,7 +169,7 @@
                   <td>
                     {% if producto.imagen %}
                     <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" width="50">
-                   <a href="{% url 'catalogue_detail' producto.id %}"
+                    <a href="{% url 'catalogue_detail' producto.id %}"
                       class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
                       Ver Detalle
                     </a>
@@ -177,15 +177,15 @@
                     <a href="{% url 'add_to_cart' producto.id %}"
                       class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
                       Añadir al Carrito
-                    
-                    {% else %}
-                    <p> N/A</p>
-                    {% endif %}
+
+                      {% else %}
+                      <p> N/A</p>
+                      {% endif %}
                   </td>
-                  
+
                 </tr>
                 {% endif %}
-                
+
                 {% endfor %}
               </tbody>
             </table>
@@ -232,9 +232,9 @@
                     <a href="{% url 'add_to_cart' producto.id %}"
                       class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
                       Añadir al Carrito
-                    {% else %}
-                    N/A
-                    {% endif %}
+                      {% else %}
+                      N/A
+                      {% endif %}
                   </td>
                 </tr>
                 {% endif %}
@@ -257,7 +257,7 @@
         data-bs-parent="#accordionExample">
         <div class="accordion-body dark-accordion-body">
           <!-- contenido aquí -->
-           <div class="table-responsive" style="margin-top: 2rem;">
+          <div class="table-responsive" style="margin-top: 2rem;">
             <table class="table table-dark table-striped table-sm">
               <thead>
                 <tr style="border: 1px solid black; background-color: #15725b;">
@@ -284,9 +284,9 @@
                     <a href="{% url 'add_to_cart' producto.id %}"
                       class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
                       Añadir al Carrito
-                    {% else %}
-                    N/A
-                    {% endif %}
+                      {% else %}
+                      N/A
+                      {% endif %}
                   </td>
                 </tr>
                 {% endif %}
