@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import (
     Order,
     OrderItem,
-    TarjetaCompra,
     Producto,
     Categoria,
 )
@@ -12,4 +11,4 @@ admin.site.register(Producto)
 admin.site.register(Categoria)
 admin.site.register(Order)
 admin.site.register(OrderItem)
-admin.site.register(TarjetaCompra)
+

@@ -1,3 +1,4 @@
+from datetime import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
@@ -10,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib import messages
 from django.views import View
 from django.views.generic import (
     CreateView,
@@ -22,7 +23,6 @@ from django.views.generic import (
 )
 
 from .models import *
-from .forms import LibroForm
 from .forms import ProductoForm
 
 # Create your views here.
@@ -212,47 +212,8 @@ def add_to_cart(request, id):
 
     return redirect('cart')  # redirige al carrito o a donde tú quieras
 
-class catalogueListView(ListView):
-    model = Libro
-    template_name = "catalogue.html"
-    context_object_name = "libros"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        if self.request.user.is_authenticated:
-            user = self.request.user
-            order, created = Order.objects.get_or_create(user=user, complete=False)
-            items = order.orderitem_set.all()
-            cartItems = order.get_cart_items
-        else:
-            items = []
-            order = {"get_cart_total": 0, "get_cart_items": 0, "shipping": False}
-            cartItems = order["get_cart_items"]
-
-        context["items"] = items
-        context["order"] = order
-        context["cartItems"] = cartItems
-
-        return context
 
 
-@login_required
-def libro_detail(request, libro_id):
-    libro = get_object_or_404(Libro, pk=libro_id)
-
-    if request.user.is_authenticated:
-        user = request.user
-        order, created = Order.objects.get_or_create(user=user, complete=False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_cart_items
-    else:
-        items = []
-        order = {"get_cart_total": 0, "get_cart_items": 0, "shipping": False}
-        cartItems = order["get_cart_items"]
-
-    context = {"libro": libro, "items": items, "order": order, "cartItems": cartItems}
-    return render(request, "catalogue_detail.html", context)
 
 
 
@@ -272,36 +233,67 @@ def checkout(request):
     return render(request, "checkout.html", context)
 
 
+
+
+#---------------tranbank-------------------
+import uuid
+from django.http import HttpResponseBadRequest
+from transbank.webpay.webpay_plus.transaction import Transaction
+from transbank.common.options import WebpayOptions
+from transbank.common.integration_type import IntegrationType
+
+options = WebpayOptions(
+    commerce_code='597055555532',
+    api_key='579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C',
+    integration_type=IntegrationType.TEST
+)
+
+tx = Transaction(options)
+
+def iniciar_pago(request):
+    if request.method == 'POST':
+        amount = int(request.POST.get('total'))
+        buy_order = str(uuid.uuid4())[:26]
+        session_id = str(uuid.uuid4())[:61]
+        return_url = request.build_absolute_uri('/pago/respuesta/')
+
+        response = tx.create(buy_order, session_id, amount, return_url)
+        return redirect(f"{response['url']}?token_ws={response['token']}")
+
+    return render(request, 'checkout.html')
+
 @csrf_exempt
-def updateItem(request):
-    data = json.loads(request.body)
-    libroId = data.get("libroId")
-    action = data.get("action")
+def respuesta(request):
+    token = request.GET.get('token_ws') or request.POST.get('token_ws')
+    if not token:
+        messages.error(request, "Token no recibido.")
+        return redirect('checkout')
 
-    print("Action:", action)
-    print("libroId:", libroId)
+    response = tx.commit(token)
 
-    user = request.user
-    libro = Libro.objects.get(id=libroId)
-    order, created = Order.objects.get_or_create(user=user, complete=False)
+    if response['status'] == 'AUTHORIZED':
+        # Buscar la orden incompleta más reciente del usuario
+        order = Order.objects.filter(user=request.user, complete=False).order_by('-date_ordered').first()
 
-    orderItem, created = OrderItem.objects.get_or_create(order=order, libro=libro)
+        if not order:
+            return render(request, 'pago_error.html', {'response': response, 'error': 'No se encontró una orden válida.'})
 
-    if action == "add":
-        orderItem.quantity = orderItem.quantity + 1
-    elif action == "remove":
-        orderItem.quantity = orderItem.quantity - 1
-    elif action == "delete":
-        orderItem.quantity = orderItem.quantity == 0
+        order.complete = True
+        order.transaction_id = response['buy_order']
+        order.date_ordered = timezone.now()
+        order.save()
 
-    orderItem.save()
+        # Actualizar el stock de los productos
+        for item in order.orderitem_set.all():
+            producto = item.producto
+            producto.stockProducto -= item.quantity
+            producto.save()
 
-    if orderItem.quantity <= 0:
-        orderItem.delete()
+        return render(request, 'pago_exito.html', {'response': response})
 
-    return JsonResponse("Item was added", safe=False)
-
-
+    else:
+        return render(request, 'pago_error.html', {'response': response})
+    #---------------------------------------------------------------------------
 # ! Configuracion Email
 
 from django.core.mail import send_mail
@@ -334,19 +326,16 @@ def contact_enviado(request):
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.response import Response
-from .models import Libro, Order, OrderItem, TarjetaCompra
+from .models import  Order, OrderItem
 from django.contrib.auth.models import User
 from .serializers import (
-    LibroSerializer,
+
     OrderSerializer,
     OrderItemSerializer,
-    TarjetaCompraSerializer,
+   
 )
 
 # Create your views here.
-class LibroViewSett(viewsets.ModelViewSet):
-    queryset = Libro.objects.all()
-    serializer_class = LibroSerializer
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -359,27 +348,3 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     serializer_class = OrderItemSerializer
 
 
-class TarjetaCompraViewSet(viewsets.ModelViewSet):
-    queryset = TarjetaCompra.objects.all()
-    serializer_class = TarjetaCompraSerializer
-
-"""  
-class LibroListView(LoginRequiredMixin, ListView):
-    model = Libro
-    template_name = "admin/productos_list.html"
-    context_object_name = "libros"
-class LibroCreateView(CreateView):
-    model = Libro
-    form_class = LibroForm
-    template_name = "admin/productos_form.html"
-
-    def form_valid(self, form):
-        libro = form.save(commit=False)
-        archivo_libro = self.request.FILES.get("archivoLibro")
-        if archivo_libro:
-            if archivo_libro.name and len(archivo_libro.name) > 100:
-                archivo_libro.name = archivo_libro.name[:100]
-            libro.archivoLibro = archivo_libro
-        libro.save()
-        return redirect("productos_list")
-"""

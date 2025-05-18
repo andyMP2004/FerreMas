@@ -1,10 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import (
-    Libro,
     Order,
     OrderItem,
-    TarjetaCompra,
     Producto,
     Categoria,
 )
@@ -16,10 +14,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["id", "username", "email", "password"]
 
 
-class LibroSerializer(serializers.ModelSerializer):   
-    class Meta:
-        model = Libro
-        fields = "__all__"
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,8 +37,3 @@ class OrderItemSerializer(serializers.ModelSerializer):
         model = OrderItem
         fields = "__all__"
 
-
-class TarjetaCompraSerializer(serializers.ModelSerializer):   
-    class Meta:
-        model = TarjetaCompra
-        fields = "__all__"
