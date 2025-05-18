@@ -83,10 +83,10 @@
           <table class="table">
             <tr>
               <th>
-                <h5>Items: <strong>{{ items }}</strong></h5>
+                <h5>Items: <strong>{{ order.get_cart_items }}</strong></h5>
               </th>
               <th>
-                <h5>Total: <strong>${{ total }}</strong></h5>
+                <h5>Total: <strong>${{ order.get_cart_total }}</strong></h5>
               </th>
               <th>
                 <a class="btn btn-success" href="{% url 'checkout' %}">Finalizar Compra</a>
@@ -101,11 +101,11 @@
               <div style="flex:1"><strong>Precio</strong></div>
             </div>
 
-            {% for producto in productos %}
+            {% for item in items %}
             <div class="cart-row">
-              <div style="flex:2"><img src="{{ producto.imagen.url }}" width="100"></div>
-              <div style="flex:2">{{ producto.nombre }}</div>
-              <div style="flex:1">${{ producto.precio }}</div>
+              <div style="flex:2"><img src="{{ item.producto.imagen.url }}" width="100"></div>
+              <div style="flex:2">{{ item.producto.nombre }}</div>
+              <div style="flex:1">${{ item.producto.precio }}</div>
             </div>
             {% endfor %}
           </div>

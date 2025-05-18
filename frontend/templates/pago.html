@@ -21,63 +21,7 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h2>Formulario de Pago</h2>
-        <form>
-            <div class="mb-3">
-                <label for="cardNumber" class="form-label">Número de Tarjeta:</label>
-                <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="Ingrese el número de tarjeta" required pattern="[0-9]{16}" maxlength="16">
-                <div class="invalid-feedback">El número de tarjeta es inválido. Debe contener 16 dígitos numéricos.</div>
-            </div>
-            <div class="mb-3">
-                <label for="expirationMonth" class="form-label">Fecha de Vencimiento:</label>
-                <div class="row">
-                    <div class="col">
-                        <select class="form-select" id="expirationMonth" name="expirationMonth" required>
-                            <option value="">Mes</option>
-                            <option value="01">01</option>
-                            <option value="02">02</option>
-                            <option value="03">03</option>
-                            <option value="01">04</option>
-                            <option value="02">05</option>
-                            <option value="03">06</option>
-                            <option value="01">07</option>
-                            <option value="02">08</option>
-                            <option value="03">09</option>
-                            <option value="01">10</option>
-                            <option value="02">11</option>
-                            <option value="03">12</option>
-                            <!-- Agrega el resto de los meses aquí -->
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-select" id="expirationYear" name="expirationYear" required>
-                            <option value="">Año</option>
-                            <option value="2024">2024</option>
-                            <option value="2025">2025</option>
-                            <option value="2026">2026</option>
-                            <option value="2024">2027</option>
-                            <option value="2025">2028</option>
-                            <option value="2026">2029</option>
-                            <option value="2026">2030</option>
-                            <!-- Agrega el resto de los años aquí -->
-                        </select>
-                        <div class="invalid-feedback">Por favor seleccione un año válido.</div>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="cvv" class="form-label">CVV:</label>
-                <input type="text" class="form-control" id="cvv" name="cvv" placeholder="Ingrese el CVV" required pattern="[0-9]{3}" maxlength="3">
-                <div class="invalid-feedback">El CVV es inválido. Debe contener 3 dígitos numéricos.</div>
-            </div>
-            <div class="mb-3">
-                <label for="cardHolderName" class="form-label">Nombre del Titular:</label>
-                <input type="text" class="form-control" id="cardHolderName" name="cardHolderName" placeholder="Ingrese el nombre del titular" required>
-                <div class="invalid-feedback">El nombre del titular es requerido.</div>
-            </div>
-            <button type="submit" class="btn btn-primary">Pagar</button>
-        </form>
-    </div>
+<!--  contenido  -->
 
     <!-- Enlace a jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

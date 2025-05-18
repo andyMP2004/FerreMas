@@ -120,10 +120,7 @@
                       Ver Detalle
                     </a>
 
-                    <a href="{% url 'add_to_cart' producto.id %}"
-                      class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
-                      Añadir al Carrito
-                    </a>
+                   <button data-producto="{{ producto.id }}" data-action="add" class="btn btn-sm btn-success update-cart w-100">Añadir</button>
                     {% else %}
                     N/A
                     {% endif %}
@@ -174,9 +171,7 @@
                       Ver Detalle
                     </a>
 
-                    <a href="{% url 'add_to_cart' producto.id %}"
-                      class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
-                      Añadir al Carrito
+                    <button data-producto="{{ producto.id }}" data-action="add" class="btn btn-sm btn-success update-cart w-100">Añadir</button>
 
                       {% else %}
                       <p> N/A</p>
@@ -229,9 +224,7 @@
                       Ver Detalle
                     </a>
 
-                    <a href="{% url 'add_to_cart' producto.id %}"
-                      class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
-                      Añadir al Carrito
+                    <button data-producto="{{ producto.id }}" data-action="add" class="btn btn-sm btn-success update-cart w-100">Añadir</button>
                       {% else %}
                       N/A
                       {% endif %}
@@ -281,9 +274,7 @@
                       Ver Detalle
                     </a>
 
-                    <a href="{% url 'add_to_cart' producto.id %}"
-                      class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl transition-all shadow-md hover:shadow-lg">
-                      Añadir al Carrito
+                    <button data-producto="{{ producto.id }}" data-action="add" class="btn btn-sm btn-success update-cart w-100">Añadir</button>
                       {% else %}
                       N/A
                       {% endif %}
@@ -310,6 +301,11 @@
 
   <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+        var user = "{{ request.user|default:'AnonymousUser' }}";
+        var csrftoken = '{{ csrf_token }}';
+    </script>
+    <script src="{% static 'javascript/cart.js' %}"></script>
 </body>
 
 </html>

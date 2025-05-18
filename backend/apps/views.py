@@ -190,7 +190,7 @@ def home_page(request):
 def catalogue_detail(request, id):
     producto = get_object_or_404(Producto, id=id)
     return render(request, 'catalogue_detail.html', {'producto': producto})
-@login_required
+"""@login_required
 def cart(request):
     cart = request.session.get('cart', [])
     productos = Producto.objects.filter(id__in=cart)
@@ -211,11 +211,19 @@ def add_to_cart(request, id):
         request.session['cart'] = cart
 
     return redirect('cart')  # redirige al carrito o a donde tú quieras
+"""
 
+def cart(request):
+    if request.user.is_authenticated:
+        user = request.user
+        order, created = Order.objects.get_or_create(user=user, complete=False)
+        items = order.orderitem_set.all()
+    else:
+        items = []
+        order = {"get_cart_total": 0, "get_cart_items": 0}
 
-
-
-
+    context = {"items": items, "order": order}
+    return render(request, "cart.html", context)
 
 
 def checkout(request):
@@ -223,14 +231,42 @@ def checkout(request):
         user = request.user
         order, created = Order.objects.get_or_create(user=user, complete=False)
         items = order.orderitem_set.all()
-        cartItems = order.get_cart_items
     else:
         items = []
-        order = {"get_cart_total": 0, "get_cart_items": 0, "shipping": False}
-        cartItems = order["get_cart_items"]
+        order = {"get_cart_total": 0, "get_cart_items": 0}
 
-    context = {"items": items, "order": order, "cartItems": cartItems}
+    context = {"items": items, "order": order}
     return render(request, "checkout.html", context)
+
+@csrf_exempt
+def updateItem(request):
+    data = json.loads(request.body)
+    productoId = data.get("productoId")
+    action = data.get("action")
+
+    print("Action:", action)
+    print("ProductoId:", productoId)
+
+    user = request.user
+    producto = Producto.objects.get(id=productoId)
+    order, created = Order.objects.get_or_create(user=user, complete=False)
+
+    orderItem, created = OrderItem.objects.get_or_create(order=order, producto=producto)
+
+    if action == "add":
+        orderItem.quantity = orderItem.quantity + 1
+    elif action == "remove":
+        orderItem.quantity = orderItem.quantity - 1
+    elif action == "delete":
+        orderItem.quantity = orderItem.quantity == 0
+
+    orderItem.save()
+
+    if orderItem.quantity <= 0:
+        orderItem.delete()
+
+    return JsonResponse("Item was added", safe=False)
+
 
 
 
