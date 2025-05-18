@@ -1,11 +1,12 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Respuesta del Pago</title>
+    <title>Pago Exitoso</title>
 </head>
 <body>
-    <h1>¡Pago realizado con éxito!</h1>
-    <p>Gracias por tu compra. Tu transacción ha sido procesada correctamente.</p>
+    <h1>¡Gracias por tu compra!</h1>
+    <p>Transacción autorizada.</p>
+    <p>ID de Orden: {{ response.buy_order }}</p>
+    <p>Monto: {{ response.amount }}</p>
 </body>
 </html>

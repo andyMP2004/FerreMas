@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Error en el pago</title>
+</head>
+<body>
+    <h1>Ocurrió un problema con el pago.</h1>
+    <p>Status: {{ response.status }}</p>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>
