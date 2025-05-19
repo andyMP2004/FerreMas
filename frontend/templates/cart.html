@@ -34,13 +34,13 @@
       <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
         {% if user.is_superuser %}
         <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link fw-bold fs-5" href="{% url 'administracion' %}">Administración</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-bold fs-5"  href="/bodega/">bodega</a>
-                    </li>
-                </ul>
+          <li class="nav-item">
+            <a class="nav-link fw-bold fs-5" href="{% url 'administracion' %}">Administración</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-bold fs-5" href="/bodega/">bodega</a>
+          </li>
+        </ul>
         {% elif user.is_authenticated %}
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -89,8 +89,18 @@
                 <h5>Items: <strong>{{ order.get_cart_items }}</strong></h5>
               </th>
               <th>
-                <h5>Total: <strong>${{ order.get_cart_total }}</strong></h5>
-              </th>
+                <h5>
+                  <h5>Total:
+                    <strong id="total-amount" data-clp="{{ order.get_cart_total }}">
+                      ${{ order.get_cart_total }}
+                    </strong>
+                  </h5>
+
+                  <label for="moneda-select">Moneda:</label>
+                  <select id="moneda-select">
+                    <option value="CLP" selected>CLP</option>
+                    <option value="USD">USD</option>
+                  </select>
               <th>
                 <a class="btn btn-success" href="{% url 'checkout' %}">Finalizar Compra</a>
               </th>
@@ -131,6 +141,7 @@
           </footer>
           <!-- Scripts -->
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+          <script src="{% static 'javascript/moneda.js' %}"></script>
 </body>
 
 </html>

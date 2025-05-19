@@ -350,7 +350,26 @@ def contact_enviado(request):
 
 
 # -------------------------------------------------------------------------------
+#Cambio de moneda
+import requests
+from django.http import JsonResponse
 
+from django.http import JsonResponse
+import requests
+
+def obtener_tasa_dolar(request):
+    try:
+        response = requests.get("https://mindicador.cl/api/dolar", timeout=5)
+        response.raise_for_status()
+        data = response.json()
+        tasa = data.get("valor")
+        if tasa:
+            return JsonResponse({'tasa': tasa})
+        else:
+            return JsonResponse({'error': 'No se pudo obtener la tasa del dólar'}, status=500)
+    except requests.RequestException:
+        return JsonResponse({'error': 'Error al conectar con el servicio del Banco Central'}, status=500)
+#--------------------------------------------------------------------------------
 
 from django.shortcuts import render
 from rest_framework import viewsets
