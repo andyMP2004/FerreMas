@@ -45,7 +45,6 @@
                                         {% csrf_token %}
                                         <select name="nuevo_estado" class="form-select form-select-sm bg-dark text-white">
                                             <option value="pendiente" {% if item.estado == "pendiente" %}selected{% endif %}>Pendiente</option>
-                                            <option value="enviado" {% if item.estado == "enviado" %}selected{% endif %}>Enviado</option>
                                             <option value="entregado" {% if item.estado == "entregado" %}selected{% endif %}>Entregado</option>
                                         </select>
                                 </td>

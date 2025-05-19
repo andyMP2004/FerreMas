@@ -462,16 +462,23 @@ def checkout_success(request):
             'amount': order.get_cart_total
         }
     })
+# views.py
+
+from django.shortcuts import redirect, get_object_or_404
+from .models import OrderItem  # o el nombre real de tu modelo
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt  # solo si tienes problemas de CSRF (no recomendado en producción sin control)
 def cambiar_estado_item(request, item_id):
-    if request.method == "POST":
+    if request.method == 'POST':
         item = get_object_or_404(OrderItem, id=item_id)
-        nuevo_estado = request.POST.get("nuevo_estado")
-        if nuevo_estado in ["pendiente", "enviado", "entregado"]:
+        nuevo_estado = request.POST.get('nuevo_estado')
+        if nuevo_estado in ['pendiente', 'entregado']:
             item.estado = nuevo_estado
             item.save()
-    return redirect('ordenes_bodeguero')
+    return redirect('ordenes')  # Asegúrate que esta URL exista
 
-from django.contrib.admin.views.decorators import staff_member_required
+
 
 @login_required
 def ver_ordenes_bodega(request):
@@ -481,3 +488,4 @@ def ver_ordenes_bodega(request):
     return render(request, 'Bodega/orden_bodeguero.html', {
         'ordenes': ordenes
     })
+

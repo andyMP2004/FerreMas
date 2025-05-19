@@ -60,6 +60,7 @@ urlpatterns = [
     path('bodega/', views.vista_bodeguero, name='vista_bodeguero'),
     path('bodega/movimiento/', views.registrar_movimiento, name='registrar_movimiento'),
     path('bodega/historial/', views.historial_movimientos, name='historial_movimientos'),
+    path('cambiar-estado/<int:item_id>/', views.cambiar_estado_item, name='cambiar_estado_item'),
 ]
 
 
