@@ -173,6 +173,20 @@ def logout_view(request):
     return redirect("home_page")
 
 
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import OrderItem, Order
+
+@login_required
+def remove_from_cart(request, item_id):
+    try:
+        # Obtener el item del carrito solo si pertenece al usuario actual y su orden no está completa
+        order_item = get_object_or_404(OrderItem, id=item_id, order__user=request.user, order__complete=False)
+        order_item.delete()
+    except OrderItem.DoesNotExist:
+        pass  # Opcional: puedes manejar el error o ignorarlo
+
+    return redirect('cart')  # Asegúrate de que esta URL exista en tus urls.py
 def home_page(request):
     if request.user.is_authenticated:
         user = request.user
@@ -190,28 +204,6 @@ def home_page(request):
 def catalogue_detail(request, id):
     producto = get_object_or_404(Producto, id=id)
     return render(request, 'catalogue_detail.html', {'producto': producto})
-"""@login_required
-def cart(request):
-    cart = request.session.get('cart', [])
-    productos = Producto.objects.filter(id__in=cart)
-    total = sum(producto.precio for producto in productos)
-
-    return render(request, 'cart.html', {
-        'productos': productos,
-        'total': total,
-        'items': len(productos),
-    })
-@login_required
-def add_to_cart(request, id):
-    producto = get_object_or_404(Producto, id=id)
-    cart = request.session.get('cart', [])
-
-    if id not in cart:
-        cart.append(id)
-        request.session['cart'] = cart
-
-    return redirect('cart')  # redirige al carrito o a donde tú quieras
-"""
 
 def cart(request):
     if request.user.is_authenticated:

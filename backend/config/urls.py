@@ -46,6 +46,7 @@ urlpatterns = [
     path('catalogue/<int:id>/', views.catalogue_detail, name='catalogue_detail'),   
     path('administracion/producutos/update/<int:pk>/', views.ProductoUpdateView.as_view(), name='productos_update'),
     path('administracion/producutos/delete/<int:pk>/', views.ProductoDeleteView.as_view(), name='productos_confirm_delete'),
+    path('remove/<int:item_id>/', views.remove_from_cart, name='cart'),
     # -------------------------------------------------------------------------
     path('administracion/users/', views.UserListView.as_view(), name='user_list'),
     path('administracion/user/create/', views.UserCreateView.as_view(), name='user_create'),

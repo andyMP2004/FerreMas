@@ -107,7 +107,15 @@
             <div class="cart-row">
               <div style="flex:2"><img src="{{ item.producto.imagen.url }}" width="100"></div>
               <div style="flex:2">{{ item.producto.nombre }}</div>
-              <div style="flex:1">${{ item.producto.precio }}</div>
+              <div style="flex:1">${{ item.producto.precio }} </div>
+              <div style="flex:1">
+                <form method="POST" action="{% url 'cart' item.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash-alt"></i> Eliminar
+                  </button>
+                </form>
+              </div>
             </div>
             {% endfor %}
           </div>
