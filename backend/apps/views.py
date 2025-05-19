@@ -122,6 +122,7 @@ class ProductoUpdateView(LoginRequiredMixin, UpdateView):
         "descripcion",
         "precio",
         "imagen",
+        "stock",
 
     ]
     template_name = "admin/productos_update.html"

@@ -108,7 +108,7 @@
               </thead>
               <tbody>
                 {% for producto in productos %}
-                {% if producto.categoria.nombre == "Herramientas" %}
+                {% if producto.categoria.nombre == "Herramientas" and producto.stock > 0 %}
                 <tr>
                   <td>{{ producto.nombre }}</td>
                   <td>{{ producto.precio }}</td>
@@ -159,7 +159,7 @@
               </thead>
               <tbody>
                 {% for producto in productos %}
-                {% if producto.categoria.nombre == "Materiales" %}
+                {% if producto.categoria.nombre == "Materiales" and producto.stock > 0 %}
                 <tr>
                   <td>{{ producto.nombre }}</td>
                   <td>{{ producto.precio }}</td>
@@ -212,7 +212,7 @@
               </thead>
               <tbody>
                 {% for producto in productos %}
-                {% if producto.categoria.nombre == "Seguridad" %}
+                {% if producto.categoria.nombre == "Seguridad" and producto.stock > 0 %}
                 <tr>
                   <td>{{ producto.nombre }}</td>
                   <td>{{ producto.precio }}</td>
@@ -262,7 +262,7 @@
               </thead>
               <tbody>
                 {% for producto in productos %}
-                {% if producto.categoria.nombre == "otros" %}
+                {% if producto.categoria.nombre == "otros" and producto.stock > 0 %}
                 <tr>
                   <td>{{ producto.nombre }}</td>
                   <td>{{ producto.precio }}</td>

@@ -10,6 +10,7 @@ class ProductoForm(forms.ModelForm):
             "descripcion",
             "precio",
             "imagen",
+            "stock",
             
         ]
     def __init__(self, *args, **kwargs):
