@@ -55,6 +55,7 @@ urlpatterns = [
     path('bodega/', views.vista_bodeguero, name='vista_bodeguero'),
     path('bodega/movimiento/', views.registrar_movimiento, name='registrar_movimiento'),
     path('bodega/historial/', views.historial_movimientos, name='historial_movimientos'),
+    path('bodega/ordenes/', views.orden_bodeguero, name='ordenes'),
 ]
 
 

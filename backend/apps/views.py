@@ -412,3 +412,15 @@ def historial_movimientos(request):
     movimientos = MovimientoInventario.objects.select_related('producto').order_by('-fecha')
     return render(request, 'bodega/historial_movimientos.html', {'movimientos': movimientos})
 
+@login_required
+def orden_bodeguero(request):
+    if request.user.is_authenticated:
+        user = request.user
+        order, created = Order.objects.get_or_create(user=user, complete=False)
+        items = order.orderitem_set.all()
+    else:
+        items = []
+        order = {"get_cart_total": 0, "get_cart_items": 0}
+
+    context = {"items": items, "order": order}
+    return render(request, "bodega/orden_bodeguero.html", context)
