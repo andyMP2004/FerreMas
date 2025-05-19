@@ -49,6 +49,9 @@ urlpatterns = [
     path('remove/<int:item_id>/', views.remove_from_cart, name='cart'),
     path('tasa-dolar/', views.obtener_tasa_dolar, name='tasa_dolar'),
     path('ordenes/', views.ver_ordenes_bodega, name='ordenes'),
+    
+    path('cambiar-estado/<int:item_id>/', views.cambiar_estado_item, name='cambiar_estado_item'),
+
     # -------------------------------------------------------------------------
     path('administracion/users/', views.UserListView.as_view(), name='user_list'),
     path('administracion/user/create/', views.UserCreateView.as_view(), name='user_create'),

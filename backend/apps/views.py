@@ -462,6 +462,14 @@ def checkout_success(request):
             'amount': order.get_cart_total
         }
     })
+def cambiar_estado_item(request, item_id):
+    if request.method == "POST":
+        item = get_object_or_404(OrderItem, id=item_id)
+        nuevo_estado = request.POST.get("nuevo_estado")
+        if nuevo_estado in ["pendiente", "enviado", "entregado"]:
+            item.estado = nuevo_estado
+            item.save()
+    return redirect('ordenes_bodeguero')
 
 from django.contrib.admin.views.decorators import staff_member_required
 
