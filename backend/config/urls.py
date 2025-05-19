@@ -52,6 +52,9 @@ urlpatterns = [
     path('administracion/user/create/', views.UserCreateView.as_view(), name='user_create'),
     path('administracion/users/<int:pk>/update/', views.UserUpdateView.as_view(), name='user_update'),
     path('administracion/users/<int:pk>/delete/', views.UserDeleteView.as_view(), name='user_delete'),
+    path('bodega/', views.vista_bodeguero, name='vista_bodeguero'),
+    path('bodega/movimiento/', views.registrar_movimiento, name='registrar_movimiento'),
+    path('bodega/historial/', views.historial_movimientos, name='historial_movimientos'),
 ]
 
 

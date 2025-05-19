@@ -73,3 +73,23 @@ class OrderItem(models.Model):
         verbose_name = "item de orden"
         verbose_name_plural = "items de orden"
 
+class MovimientoInventario(models.Model):
+    TIPO_MOVIMIENTO = [
+            ('entrada', 'Entrada'),
+            ('salida', 'Salida'),
+    ]
+
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    tipo = models.CharField(max_length=10, choices=TIPO_MOVIMIENTO)
+    cantidad = models.IntegerField()
+    fecha = models.DateTimeField(auto_now_add=True)
+    observacion = models.TextField(null=True, blank=True)
+    usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+def __str__(self):
+    return f"{self.tipo} - {self.producto.nombre} - {self.cantidad}"
+
+class Meta:
+    verbose_name = "movimiento de inventario"
+    verbose_name_plural = "movimientos de inventario"
+

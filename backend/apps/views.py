@@ -376,4 +376,39 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
 
+from .models import Producto, MovimientoInventario
+from .forms import MovimientoInventarioForm
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def vista_bodeguero(request):
+    productos = Producto.objects.all()
+    return render(request, 'bodega/bodeguero_dashboard.html', {'productos': productos})
+
+@login_required
+def registrar_movimiento(request):
+    if request.method == 'POST':
+        form = MovimientoInventarioForm(request.POST)
+        if form.is_valid():
+            movimiento = form.save(commit=False)
+            movimiento.usuario = request.user
+            movimiento.save()
+
+            # Actualizar stock
+            producto = movimiento.producto
+            if movimiento.tipo == 'entrada':
+                producto.stock += movimiento.cantidad
+            else:
+                producto.stock -= movimiento.cantidad
+            producto.save()
+
+            return redirect('vista_bodeguero')
+    else:
+        form = MovimientoInventarioForm()
+    return render(request, 'bodega/registrar_movimiento.html', {'form': form})
+
+@login_required
+def historial_movimientos(request):
+    movimientos = MovimientoInventario.objects.select_related('producto').order_by('-fecha')
+    return render(request, 'bodega/historial_movimientos.html', {'movimientos': movimientos})
 
