@@ -19,7 +19,6 @@ class Producto(models.Model):
     precio = models.IntegerField(null=False)
     imagen = models.ImageField(upload_to="images/", null=True, blank=True)
     stock = models.IntegerField(null=False, default=0)
-    estado = models.IntegerField(null=False, default=0)
 
     def __str__(self):
         return self.nombre
@@ -62,7 +61,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
     date_added = models.DateTimeField(auto_now_add=True)
-
+    estado = models.CharField(max_length=20, default='pendiente')
 
     @property
     def get_total(self):

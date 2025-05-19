@@ -362,13 +362,15 @@ def obtener_tasa_dolar(request):
         response = requests.get("https://mindicador.cl/api/dolar", timeout=5)
         response.raise_for_status()
         data = response.json()
-        tasa = data.get("valor")
-        if tasa:
-            return JsonResponse({'tasa': tasa})
-        else:
-            return JsonResponse({'error': 'No se pudo obtener la tasa del dólar'}, status=500)
+        serie = data.get("serie", [])
+        if serie and isinstance(serie, list):
+            tasa = serie[0].get("valor")
+            if tasa:
+                return JsonResponse({'tasa': tasa})
+        return JsonResponse({'error': 'No se pudo obtener la tasa del dólar'}, status=500)
     except requests.RequestException:
         return JsonResponse({'error': 'Error al conectar con el servicio del Banco Central'}, status=500)
+
 #--------------------------------------------------------------------------------
 
 from django.shortcuts import render
@@ -383,7 +385,6 @@ from .serializers import (
    
 )
 
-# Create your views here.
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -431,15 +432,44 @@ def historial_movimientos(request):
     movimientos = MovimientoInventario.objects.select_related('producto').order_by('-fecha')
     return render(request, 'bodega/historial_movimientos.html', {'movimientos': movimientos})
 
-@login_required
-def orden_bodeguero(request):
-    if request.user.is_authenticated:
-        user = request.user
-        order, created = Order.objects.get_or_create(user=user, complete=False)
-        items = order.orderitem_set.all()
-    else:
-        items = []
-        order = {"get_cart_total": 0, "get_cart_items": 0}
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .models import Order, OrderItem
+import uuid
 
-    context = {"items": items, "order": order}
-    return render(request, "bodega/orden_bodeguero.html", context)
+@login_required
+def checkout_success(request):
+    order = Order.objects.filter(user=request.user, complete=False).first()
+
+    if not order:
+        return redirect('cart')  # No hay orden pendiente
+
+    # Simulamos obtener los datos del sistema de pago externo
+    transaction_id = str(uuid.uuid4())  # O el ID que te da Transbank
+    order.transaction_id = transaction_id
+    order.complete = True
+    order.date_ordered = timezone.now()
+    order.save()
+
+    # Puedes cambiar el estado de cada item si es necesario
+    for item in order.orderitem_set.all():
+        item.estado = 'pendiente'  # o 'confirmado', si prefieres
+        item.save()
+
+    return render(request, 'payment_success.html', {
+        'response': {
+            'buy_order': transaction_id,
+            'amount': order.get_cart_total
+        }
+    })
+
+from django.contrib.admin.views.decorators import staff_member_required
+
+@login_required
+def ver_ordenes_bodega(request):
+    # Solo mostramos órdenes completas, con al menos un item pendiente
+    ordenes = Order.objects.filter(complete=True, orderitem__estado='pendiente').distinct()
+
+    return render(request, 'Bodega/orden_bodeguero.html', {
+        'ordenes': ordenes
+    })
