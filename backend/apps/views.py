@@ -387,11 +387,17 @@ from .serializers import (
     UserSerializer,
    
 )
-
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+<<<<<<< HEAD
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+=======
+>>>>>>> 96d788061ed4e7ab180356a3c646fa36f8d60a5b
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
@@ -399,11 +405,17 @@ class UserViewSet(viewsets.ModelViewSet):
 class productoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.all()
     serializer_class = ProductoSerializer
+<<<<<<< HEAD
 
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
+=======
+>>>>>>> 96d788061ed4e7ab180356a3c646fa36f8d60a5b
 
+class CategoriaViewSet(viewsets.ModelViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()

@@ -4,8 +4,14 @@ from .views import (
     CategoriaViewSet,
     OrderViewSet,
     OrderItemViewSet,
+<<<<<<< HEAD
     UserViewSet,
     productoViewSet,
+=======
+    productoViewSet,
+    CategoriaViewSet,
+    UserViewSet,
+>>>>>>> 96d788061ed4e7ab180356a3c646fa36f8d60a5b
 )
 from .views import (
     productoCreateView,
