@@ -148,11 +148,11 @@ def signin_user(request):
         form = AuthenticationForm()  
         return render(request, "signin.html", {"form": form}) 
 
-    #método es POST, para procesar el formulario enviado por el usuario
+    #método POST, para procesar el formulario enviado 
     elif request.method == "POST":
-        form = AuthenticationForm(data=request.POST)  # Creamos el formulario con los datos enviados
+        form = AuthenticationForm(data=request.POST)  
 
-        # Verificamos si el formulario es válido (campos correctos y completos)
+        # Verificamos si el formulario es válido 
         if form.is_valid():
             username = form.cleaned_data.get("username")  
             password = form.cleaned_data.get("password")  
@@ -171,11 +171,10 @@ def signin_user(request):
             # Si el formulario no es válido, mostramos un mensaje de error
             error = "Invalid form data. Please check your input."
 
-        #Si hubo un error se retornara un mensaje de error
         return render(request, "signin.html", {"form": form, "error": error})
 
 @login_required
-def administracion(request):
+def administracion(request): #funcion de administracion
     return render(request, "admin/adminhome.html")
 
 
@@ -188,20 +187,17 @@ class ProductoListView(LoginRequiredMixin, ListView): # metodo get para listar l
     model = Producto
     template_name = "admin/productos_list.html"
     context_object_name = "productos"
-class ProductosListView(ListView):
+class ProductosListView(ListView): # Metodo get para listar los productos por categoria en el consumo de la api
     model = Producto
     template_name = "catalogue.html"
     context_object_name = "productos"
-class HerramientaDetailView( DetailView):
+class HerramientaDetailView( DetailView): #Metodo get para obtener el detalle del articulo
     model = Producto
     template_name = "catalogue_detail.html"
     context_object_name = "Lista"
 
 
-
-
-
-class productoCreateView(CreateView): # metodo post para crear un producto en el consumo de la api
+class productoCreateView(CreateView): #Metodo post para crear un producto en el consumo de la api
     model = Producto
     form_class = ProductoForm
     template_name = "admin/productos_form.html"
@@ -434,7 +430,7 @@ def contact_enviado(request):
 
 def obtener_tasa_dolar(request):
     try:
-        response = requests.get("https://mindicador.cl/api/dolar", timeout=5)
+        response = requests.get("https://mindicador.cl/api/dolar", timeout=5) #Metodo Get para obtener llamar la api
         response.raise_for_status()
         data = response.json()
         serie = data.get("serie", [])
@@ -464,7 +460,7 @@ def vista_bodeguero(request):
 
 @login_required
 def registrar_movimiento(request):
-    if request.method == 'POST':
+    if request.method == 'POST': #Metodo post para realizar cambios en el inventario
         form = MovimientoInventarioForm(request.POST)
         if form.is_valid():
             movimiento = form.save(commit=False)
@@ -477,7 +473,7 @@ def registrar_movimiento(request):
                 producto.stock += movimiento.cantidad
             else:
                 producto.stock -= movimiento.cantidad
-            producto.save()
+            producto.save() #El cambio se guarda en la BD
 
             return redirect('vista_bodeguero')
     else:
@@ -515,18 +511,18 @@ def checkout_success(request):
             'amount': order.get_cart_total
         }
     })
-# views.py
 
 
-@csrf_exempt  # solo si tienes problemas de CSRF (no recomendado en producción sin control)
+
+@csrf_exempt  # solo si tienes problemas de CSRF 
 def cambiar_estado_item(request, item_id):
-    if request.method == 'POST':
+    if request.method == 'POST': #Metodo post para realizar el formulario del estado
         item = get_object_or_404(OrderItem, id=item_id)
         nuevo_estado = request.POST.get('nuevo_estado')
         if nuevo_estado in ['pendiente', 'entregado']:
             item.estado = nuevo_estado
             item.save()
-    return redirect('ordenes')  # Asegúrate que esta URL exista
+    return redirect('ordenes') 
 
 
 
