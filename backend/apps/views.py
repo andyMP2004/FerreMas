@@ -24,8 +24,85 @@ from django.views.generic import (
 
 from .models import *
 from .forms import ProductoForm
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import OrderItem, Order
+import uuid
+from django.http import HttpResponseBadRequest
+from transbank.webpay.webpay_plus.transaction import Transaction
+from transbank.common.options import WebpayOptions
+from transbank.common.integration_type import IntegrationType
+from django.core.mail import send_mail
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render
+import requests
+from django.http import JsonResponse
 
-# Create your views here.
+from django.http import JsonResponse
+import requests
+from django.shortcuts import render
+from rest_framework import viewsets
+from rest_framework.response import Response
+from .models import  Order, OrderItem
+from django.contrib.auth.models import User
+from .serializers import (
+
+    CategoriaSerializer,
+    OrderSerializer,
+    OrderItemSerializer,
+    ProductoSerializer,
+    UserSerializer,
+   
+)
+# vistas de usuario para consumo de api user
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+class UserListView(LoginRequiredMixin, ListView):# metodo get para listar los usuarios en el consumo de la api
+    model = User
+    template_name = "admin/user_list.html"
+    context_object_name = "users"
+
+
+class UserCreateView(LoginRequiredMixin, CreateView):
+    model = User
+    fields = ["username", "email", "password", "is_superuser"]# metodo post para crear un usuario en el consumo de la api
+    template_name = "admin/user_form.html"
+    success_url = reverse_lazy("user_list")
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        password = form.cleaned_data["password"]
+        user.set_password(password)
+        user.save()
+        return super().form_valid(form)
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):# metodo put para actualizar un usuario en el consumo de la api
+    model = User
+    fields = ["username", "email"]
+    template_name = "admin/user_update.html"
+    success_url = reverse_lazy("user_list")
+
+
+class UserDeleteView(LoginRequiredMixin, DeleteView):# metodo delete para eliminar un usuario en el consumo de la api
+    model = User
+    template_name = "admin/user_confirm_delete.html"
+    success_url = reverse_lazy("user_list")
+
 def register(request):
     if request.method == "GET":
         return render(request, "register.html", {"form": UserCreationForm})
@@ -86,24 +163,29 @@ def administracion(request):
     return render(request, "admin/adminhome.html")
 
 
-class ProductoListView(LoginRequiredMixin, ListView):
+# vistas de productos para consumo de api productos
+class productoViewSet(viewsets.ModelViewSet):
+    queryset = Producto.objects.all()
+    serializer_class = ProductoSerializer
+
+class ProductoListView(LoginRequiredMixin, ListView): # metodo get para listar los productos en el consumo de la api
     model = Producto
     template_name = "admin/productos_list.html"
     context_object_name = "productos"
-
+class ProductosListView(ListView):
+    model = Producto
+    template_name = "catalogue.html"
+    context_object_name = "productos"
 class HerramientaDetailView( DetailView):
     model = Producto
     template_name = "catalogue_detail.html"
     context_object_name = "Lista"
 
 
-class ProductosListView(ListView):
-    model = Producto
-    template_name = "catalogue.html"
-    context_object_name = "productos"
 
 
-class productoCreateView(CreateView):
+
+class productoCreateView(CreateView): # metodo post para crear un producto en el consumo de la api
     model = Producto
     form_class = ProductoForm
     template_name = "admin/productos_form.html"
@@ -114,7 +196,7 @@ class productoCreateView(CreateView):
 
 
 
-class ProductoUpdateView(LoginRequiredMixin, UpdateView):
+class ProductoUpdateView(LoginRequiredMixin, UpdateView): # metodo put para actualizar un producto en el consumo de la api
     model = Producto
     fields = [
         "nombre",
@@ -129,43 +211,11 @@ class ProductoUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("productos_list")
 
 
-class ProductoDeleteView(LoginRequiredMixin, DeleteView):
+class ProductoDeleteView(LoginRequiredMixin, DeleteView): # metodo delete para eliminar un producto en el consumo de la api
     model = Producto
     template_name = "admin/productos_confirm_delete.html"
     success_url = reverse_lazy("productos_list")
 
-
-class UserListView(LoginRequiredMixin, ListView):
-    model = User
-    template_name = "admin/user_list.html"
-    context_object_name = "users"
-
-
-class UserCreateView(LoginRequiredMixin, CreateView):
-    model = User
-    fields = ["username", "email", "password", "is_superuser"]
-    template_name = "admin/user_form.html"
-    success_url = reverse_lazy("user_list")
-
-    def form_valid(self, form):
-        user = form.save(commit=False)
-        password = form.cleaned_data["password"]
-        user.set_password(password)
-        user.save()
-        return super().form_valid(form)
-
-
-class UserUpdateView(LoginRequiredMixin, UpdateView):
-    model = User
-    fields = ["username", "email"]
-    template_name = "admin/user_update.html"
-    success_url = reverse_lazy("user_list")
-
-
-class UserDeleteView(LoginRequiredMixin, DeleteView):
-    model = User
-    template_name = "admin/user_confirm_delete.html"
-    success_url = reverse_lazy("user_list")
 
 
 @login_required
@@ -173,10 +223,30 @@ def logout_view(request):
     logout(request)
     return redirect("home_page")
 
+# vistas de categoria para consumo de api categoria
+class CategoriaViewSet(viewsets.ModelViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
 
-from django.shortcuts import redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import OrderItem, Order
+
+class CategoriaViewSet(viewsets.ModelViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+# vistas de ordenes para consumo de api order
+class OrderItemViewSet(viewsets.ModelViewSet):
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
+
+
+
+
+
+
 
 @login_required
 def remove_from_cart(request, item_id):
@@ -265,11 +335,7 @@ def updateItem(request):
 
 
 #---------------tranbank-------------------
-import uuid
-from django.http import HttpResponseBadRequest
-from transbank.webpay.webpay_plus.transaction import Transaction
-from transbank.common.options import WebpayOptions
-from transbank.common.integration_type import IntegrationType
+
 
 options = WebpayOptions(
     commerce_code='597055555532',
@@ -325,11 +391,6 @@ def respuesta(request):
     #---------------------------------------------------------------------------
 # ! Configuracion Email
 
-from django.core.mail import send_mail
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
-
-
 def contact(request):
     if request.method == "POST":
         email = request.POST.get("email")
@@ -351,11 +412,7 @@ def contact_enviado(request):
 
 # -------------------------------------------------------------------------------
 #Cambio de moneda
-import requests
-from django.http import JsonResponse
 
-from django.http import JsonResponse
-import requests
 
 def obtener_tasa_dolar(request):
     try:
@@ -373,55 +430,10 @@ def obtener_tasa_dolar(request):
 
 #--------------------------------------------------------------------------------
 
-from django.shortcuts import render
-from rest_framework import viewsets
-from rest_framework.response import Response
-from .models import  Order, OrderItem
-from django.contrib.auth.models import User
-from .serializers import (
-
-    CategoriaSerializer,
-    OrderSerializer,
-    OrderItemSerializer,
-    ProductoSerializer,
-    UserSerializer,
-   
-)
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
 
 
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-class productoViewSet(viewsets.ModelViewSet):
-    queryset = Producto.objects.all()
-    serializer_class = ProductoSerializer
-
-class CategoriaViewSet(viewsets.ModelViewSet):
-    queryset = Categoria.objects.all()
-    serializer_class = CategoriaSerializer
-
-
-class CategoriaViewSet(viewsets.ModelViewSet):
-    queryset = Categoria.objects.all()
-    serializer_class = CategoriaSerializer
-
-class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-
-
-class OrderItemViewSet(viewsets.ModelViewSet):
-    queryset = OrderItem.objects.all()
-    serializer_class = OrderItemSerializer
 
 from .models import Producto, MovimientoInventario
 from .forms import MovimientoInventarioForm
@@ -459,10 +471,6 @@ def historial_movimientos(request):
     movimientos = MovimientoInventario.objects.select_related('producto').order_by('-fecha')
     return render(request, 'bodega/historial_movimientos.html', {'movimientos': movimientos})
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from .models import Order, OrderItem
-import uuid
 
 @login_required
 def checkout_success(request):
@@ -491,9 +499,6 @@ def checkout_success(request):
     })
 # views.py
 
-from django.shortcuts import redirect, get_object_or_404
-from .models import OrderItem  # o el nombre real de tu modelo
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt  # solo si tienes problemas de CSRF (no recomendado en producción sin control)
 def cambiar_estado_item(request, item_id):
