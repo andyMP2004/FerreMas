@@ -104,59 +104,75 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):# metodo delete para elimin
     success_url = reverse_lazy("user_list")
 
 def register(request):
-    if request.method == "GET":
+    # Método GET para mostrar el formulario de registro
+    if request.method == "GET":  
         return render(request, "register.html", {"form": UserCreationForm})
     else:
-
+        # Metodo POST, para verificar si las contraseñas coinciden
         if request.POST["registerPassword"] == request.POST["confirmPassword"]:
             try:
+                # Creamos un nuevo usuario con los datos del formulario
                 user = User.objects.create_user(
                     username=request.POST["registerName"],
                     email=request.POST["registerEmail"],
                     password=request.POST["registerPassword"],
                 )
-                user.save()
+                user.save()  # Guardamos el usuario en la base de datos
+
+                # Iniciamos sesión automáticamente después del registro
                 login(request, user)
-                return redirect("home_page")
+                return redirect("home_page")  # Redirigimos a la página principal
 
             except IntegrityError:
+                # Si el nombre de usuario ya existe, mostramos error
                 return render(
                     request,
                     "register_error.html",
                     {"form": UserCreationForm, "error": "Username already exists."},
                 )
 
+        # Si las contraseñas no coinciden, mostramos mensaje de error
         return render(
             request,
             "signup.html",
             {"form": UserCreationForm, "error": "Passwords did not match."},
         )
 
-
 def register_error(request):
     return render(request, "register_error.html")
 
 
 def signin_user(request):
+    # Si el método de la solicitud es GET, mostramos el formulario vacío
     if request.method == "GET":
-        form = AuthenticationForm()
-        return render(request, "signin.html", {"form": form})
+        form = AuthenticationForm()  
+        return render(request, "signin.html", {"form": form}) 
+
+    #método es POST, para procesar el formulario enviado por el usuario
     elif request.method == "POST":
-        form = AuthenticationForm(data=request.POST)
+        form = AuthenticationForm(data=request.POST)  # Creamos el formulario con los datos enviados
+
+        # Verificamos si el formulario es válido (campos correctos y completos)
         if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
+            username = form.cleaned_data.get("username")  
+            password = form.cleaned_data.get("password")  
+
+            # Intentamos autenticar al usuario con los datos proporcionados
             user = authenticate(username=username, password=password)
+
+            # Si la autenticación fue exitosa, iniciamos sesión y redirigimos al home
             if user is not None:
-                login(request, user)
-                return redirect("home_page")
+                login(request, user)  
+                return redirect("home_page")  
             else:
+                # Si el usuario no fue autenticado, mostramos un mensaje de error
                 error = "Username or password is incorrect."
         else:
+            # Si el formulario no es válido, mostramos un mensaje de error
             error = "Invalid form data. Please check your input."
 
+        #Si hubo un error se retornara un mensaje de error
         return render(request, "signin.html", {"form": form, "error": error})
-
 
 @login_required
 def administracion(request):
@@ -233,31 +249,39 @@ class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
 
+# vistas de ordenes para consumo de api order
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
-# vistas de ordenes para consumo de api order
+
 class OrderItemViewSet(viewsets.ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
 
 
-
-
-
-
-
+#Carrito
 @login_required
+def cart(request):
+    if request.user.is_authenticated: #requiere que el usuario este logeado
+        user = request.user
+        order, created = Order.objects.get_or_create(user=user, complete=False)
+        items = order.orderitem_set.all()
+    else:
+        items = []
+        order = {"get_cart_total": 0, "get_cart_items": 0}
+
+    context = {"items": items, "order": order}
+    return render(request, "cart.html", context)
 def remove_from_cart(request, item_id):
     try:
-        # Obtener el item del carrito solo si pertenece al usuario actual y su orden no está completa
+        # Obtener el item del carrito solo si pertenece al usuario actual
         order_item = get_object_or_404(OrderItem, id=item_id, order__user=request.user, order__complete=False)
-        order_item.delete()
+        order_item.delete() #Metodo delete en el caso que no necesitmos esa herramienta
     except OrderItem.DoesNotExist:
-        pass  # Opcional: puedes manejar el error o ignorarlo
+        pass  
 
-    return redirect('cart')  # Asegúrate de que esta URL exista en tus urls.py
+    return redirect('cart') 
 def home_page(request):
     if request.user.is_authenticated:
         user = request.user
@@ -272,64 +296,58 @@ def home_page(request):
     context = {"items": items, "order": order, "cartItems": cartItems}
     return render(request, "home-page.html", context)
 
+#Mostrar el detalle del catalogo
 def catalogue_detail(request, id):
-    producto = get_object_or_404(Producto, id=id)
+    producto = get_object_or_404(Producto, id=id) #Metodo get para obtener el id del producto
     return render(request, 'catalogue_detail.html', {'producto': producto})
 
-def cart(request):
-    if request.user.is_authenticated:
-        user = request.user
-        order, created = Order.objects.get_or_create(user=user, complete=False)
-        items = order.orderitem_set.all()
-    else:
-        items = []
-        order = {"get_cart_total": 0, "get_cart_items": 0}
-
-    context = {"items": items, "order": order}
-    return render(request, "cart.html", context)
 
 
+#Checkout de la orden realizada
 def checkout(request):
     if request.user.is_authenticated:
         user = request.user
-        order, created = Order.objects.get_or_create(user=user, complete=False)
-        items = order.orderitem_set.all()
+        order, created = Order.objects.get_or_create(user=user, complete=False) # Obtenemos o creamos una orden 
+        items = order.orderitem_set.all() # Obtenemos los ítems relacionados con la orden
     else:
         items = []
-        order = {"get_cart_total": 0, "get_cart_items": 0}
+        order = {"get_cart_total": 0, "get_cart_items": 0}   # Si el usuario no está autenticado, no hay ítems ni orden activa
 
-    context = {"items": items, "order": order}
+    context = {"items": items, "order": order} # Creamos el contexto con los ítems y la orden
     return render(request, "checkout.html", context)
 
+#Actualizar productos 
 @csrf_exempt
 def updateItem(request):
     data = json.loads(request.body)
-    productoId = data.get("productoId")
-    action = data.get("action")
+    productoId = data.get("productoId")  # Metodo GET para obtener el ID del producto
+    action = data.get("action")          # Metodo get para obtener la acción: add, remove o delete
 
     print("Action:", action)
     print("ProductoId:", productoId)
 
-    user = request.user
-    producto = Producto.objects.get(id=productoId)
-    order, created = Order.objects.get_or_create(user=user, complete=False)
-
+    user = request.user  
+    producto = Producto.objects.get(id=productoId)  # Metodo get para obtener el producto desde la BD
+    order, created = Order.objects.get_or_create(user=user, complete=False)  
+   
+    # Obtenemos o creamos un item 
     orderItem, created = OrderItem.objects.get_or_create(order=order, producto=producto)
 
+    # Modificamos la cantidad del producto
     if action == "add":
-        orderItem.quantity = orderItem.quantity + 1
+        orderItem.quantity = orderItem.quantity + 1  
     elif action == "remove":
-        orderItem.quantity = orderItem.quantity - 1
+        orderItem.quantity = orderItem.quantity - 1 
     elif action == "delete":
-        orderItem.quantity = orderItem.quantity == 0
+        orderItem.quantity == 0  
 
-    orderItem.save()
+    orderItem.save()  # Guardamos los cambios en la base de datos
 
+    # Si la cantidad del item es 0 o menos, lo eliminamos de la orden
     if orderItem.quantity <= 0:
         orderItem.delete()
 
     return JsonResponse("Item was added", safe=False)
-
 
 
 
@@ -346,7 +364,7 @@ options = WebpayOptions(
 tx = Transaction(options)
 
 def iniciar_pago(request):
-    if request.method == 'POST':
+    if request.method == 'POST': #Metodo post para iniciar con el formulario de pago
         amount = int(request.POST.get('total'))
         buy_order = str(uuid.uuid4())[:26]
         session_id = str(uuid.uuid4())[:61]
@@ -392,7 +410,7 @@ def respuesta(request):
 # ! Configuracion Email
 
 def contact(request):
-    if request.method == "POST":
+    if request.method == "POST": #Metodo post para recibir el formulario de recuperar contraseña
         email = request.POST.get("email")
         subject = "Recuperación Contraseña"
         email_content = f"Email: {email}\nSolicita recuperación de contraseña."
@@ -434,7 +452,7 @@ def obtener_tasa_dolar(request):
 
 
 
-
+#Vista del bodeguero
 from .models import Producto, MovimientoInventario
 from .forms import MovimientoInventarioForm
 from django.contrib.auth.decorators import login_required
